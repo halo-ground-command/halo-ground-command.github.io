@@ -10,10 +10,10 @@ Force Builder: https://halo-ground-command.github.io/
 - Build forces by **Faction** and **Battle Group**
 - Tracks **Points** and **BR**
 - Validates **Required** slots and **Optional** caps
-- Unit **upgrades** support (including required “choose 1” groups)
+- Unit **upgrades** support
 - **Copy roster** output for sharing
 - **Save/Load JSON** list files
-- **Print / Export to PDF** (via browser print dialog)
+- **Print / Export to PDF**
 
 ## Run locally
 1. Download the `.html`
