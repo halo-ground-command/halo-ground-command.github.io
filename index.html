@@ -844,7 +844,6 @@ UNITS: {
         }
       ],
 
-      // Optional: show what the upgrade weapon is (your UI won’t auto-swap, but it’s useful for roster text later)
       upgradeWeapons: {
         RIFLE_ROCKET: [
           {
@@ -896,37 +895,36 @@ UNITS: {
         }
       ],
 
-      // “Active Overwatch” is on the card as a UNIT LOADOUT
       tags: ["Active Overwatch"],
 
-	upgrades: [
-	  {
-		id: "FS_WEAPON_TEAM_HMG",
-		mode: "flat",
-		label: "Weapon Team (choose 1): 2 Elements become Heavy Machine Gun team",
-		cost: 0,
-		reqGroup: "FS_WEAPON_TEAM",
-		reqOneOf: true,
-		mutex: true,
-		reqLabel: "Weapon Team (choose 1)"   
-	  },
-	  {
-		id: "FS_WEAPON_TEAM_RL",
-		mode: "flat",
-		label: "Weapon Team (choose 1): 2 Elements become Rocket Launchers team",
-		cost: 0,
-		reqGroup: "FS_WEAPON_TEAM",
-		reqOneOf: true,
-		mutex: true,
-		reqLabel: "Weapon Team (choose 1)"   
-	  },
-	  {
-		id: "FS_CORPORAL",
-		mode: "flat",
-		label: "Army Corporal: Up to 1 Element upgrades to Corporal (see Corporal card)",
-		cost: 10
-	  }
-	],
+      upgrades: [
+        {
+          id: "FS_WEAPON_TEAM_HMG",
+          mode: "flat",
+          label: "Weapon Team (choose 1): 2 Elements become Heavy Machine Gun team",
+          cost: 0,
+          reqGroup: "FS_WEAPON_TEAM",
+          reqOneOf: true,
+          mutex: true,
+          reqLabel: "Weapon Team (choose 1)"
+        },
+        {
+          id: "FS_WEAPON_TEAM_RL",
+          mode: "flat",
+          label: "Weapon Team (choose 1): 2 Elements become Rocket Launchers team",
+          cost: 0,
+          reqGroup: "FS_WEAPON_TEAM",
+          reqOneOf: true,
+          mutex: true,
+          reqLabel: "Weapon Team (choose 1)"
+        },
+        {
+          id: "FS_CORPORAL",
+          mode: "flat",
+          label: "Army Corporal: Up to 1 Element upgrades to Corporal (see Corporal card)",
+          cost: 10
+        }
+      ],
 
       upgradeWeapons: {
         FS_WEAPON_TEAM_HMG: [
@@ -1045,7 +1043,9 @@ UNITS: {
           id: "RECON_SNIPER_TEAM",
           mode: "flat",
           label: "Weapon Upgrade (required): 2 Elements become Sniper Weapons Team",
-          cost: 0
+          cost: 0,
+          reqGroup: "RECON_WEAPON_TEAM",
+          reqOneOf: true
         }
       ],
 
@@ -1182,8 +1182,24 @@ UNITS: {
 
       upgrades: [
         { id: "HELLJUMPERS_ORBITAL_INSERTION", mode: "flat", label: "Death from Above: Gain Orbital Insertion loadout", cost: 30 },
-        { id: "HELLJUMPERS_WEAPON_SNIPER", mode: "flat", label: "Weapon Upgrade: Up to 2 Elements become Sniper Rifle team (+10)", cost: 10 },
-        { id: "HELLJUMPERS_WEAPON_ROCKET", mode: "flat", label: "Weapon Upgrade: Up to 2 Elements become Rocket Launchers team (+10)", cost: 10 },
+        {
+          id: "HELLJUMPERS_WEAPON_SNIPER",
+          mode: "count",
+          label: "Weapon Upgrade: Sniper Rifle (up to 2 elements, +10 pts each)",
+          costEach: 10,
+          max: 2,
+          reqGroup: "HELLJUMPERS_WEAPON_TEAM",
+          mutex: true
+        },
+        {
+          id: "HELLJUMPERS_WEAPON_ROCKET",
+          mode: "count",
+          label: "Weapon Upgrade: Rocket Launchers (up to 2 elements, +10 pts each)",
+          costEach: 10,
+          max: 2,
+          reqGroup: "HELLJUMPERS_WEAPON_TEAM",
+          mutex: true
+        },
         { id: "HELLJUMPERS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes ODST Officer (see card)", cost: 20 }
       ],
 
@@ -1206,7 +1222,7 @@ UNITS: {
       name: "Mongoose — M274 Ultra Light ATV",
       type: "ARM",
       br: 1,
-      points: 50, // EACH
+      points: 50,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '12/18"',
@@ -1227,7 +1243,7 @@ UNITS: {
       name: "Cyclops — Hrunting Mk III Exoskeleton",
       type: "ARM",
       br: 2,
-      points: 120, // EACH
+      points: 120,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '8/12"',
@@ -1248,7 +1264,7 @@ UNITS: {
       name: "Warthog — M12 Force Application Vehicle",
       type: "ARM",
       br: 2,
-      points: 100, // EACH
+      points: 100,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '10/15"',
@@ -1269,7 +1285,7 @@ UNITS: {
       name: "Rocket Warthog — M12R Light Anti-Aircraft Vehicle",
       type: "ARM",
       br: 2,
-      points: 100, // EACH
+      points: 100,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '10/15"',
@@ -1290,7 +1306,7 @@ UNITS: {
       name: "Gauss Warthog — M12G1 Light Anti-Armour Vehicle",
       type: "ARM",
       br: 2,
-      points: 110, // EACH
+      points: 110,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '10/15"',
@@ -1379,7 +1395,7 @@ UNITS: {
       name: "Hornet",
       type: "FLY",
       br: 2,
-      points: 100, // EACH
+      points: 100,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '12/18"',
@@ -1392,8 +1408,27 @@ UNITS: {
       ],
       tags: ["Elusive (ALL-1)", "Evasive (1)"],
       upgrades: [
-        { id: "HORNET_M41_RL", mode: "flat", label: "Weapon Upgrade: Element gains M41 Rocket Launchers (+20 pts each)", cost: 20 }
-      ]
+        {
+          id: "HORNET_M41_RL",
+          mode: "count",
+          label: "Weapon Upgrade: M41 Rocket Launchers (+20 pts each element)",
+          costEach: 20,
+          max: 2
+        }
+      ],
+	  upgradeWeapons: {
+	  HORNET_M41_RL: [
+		{
+		  name: "M41 Rocket Launchers (upg)",
+		  range: '12/24"',
+		  arcs: "FRONT",
+		  ap: 4,
+		  at: 8,
+		  aa: 8,
+		  loadouts: ["Lock On", "Devastating (FLY)"]
+		}
+	  ]
+	}
     },
 
     UNSC_FALCON: {
@@ -1417,7 +1452,6 @@ UNITS: {
       tags: ["Elusive (ALL-1)"]
     },
 
-    // ASF (Air Support Flyer)
     UNSC_PELICAN: {
       id: "UNSC_PELICAN",
       faction: "UNSC",
@@ -1427,7 +1461,6 @@ UNITS: {
       points: 200,
       elementsRule: { mode: "fixed", min: 1, max: 1 },
 
-      // ASF stats are special in your card; keep as text for now
       damageTrack: "6-6-5",
 
       weapons: [
@@ -1588,2102 +1621,2056 @@ UNITS: {
         { id: "SPI_BIOFOAM_INJECTORS", mode: "flat", label: "Advanced Armor Components: Biofoam Injectors", cost: 40 }
       ]
     }
-	
-  // =========================
-  // UPGRADE-ONLY “CARDS” (optional to keep here for now)
-  // =========================	
-	
   },
 
-Covenant: {
-  // =========================
-  // INFANTRY
-  // =========================
-  COV_GRUNTS: {
-    id: "COV_GRUNTS",
-    faction: "Covenant",
-    name: "Grunts — Covenant Lance",
-    type: "INF",
-    br: 1,
-    points: 50,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
+  Covenant: {
+    // =========================
+    // INFANTRY
+    // =========================
+    COV_GRUNTS: {
+      id: "COV_GRUNTS",
+      faction: "Covenant",
+      name: "Grunts — Covenant Lance",
+      type: "INF",
+      br: 1,
+      points: 50,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
 
-    move: '6/9"',
-    react: "9/11",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
+      move: '6/9"',
+      react: "9/11",
+      soak: 0,
+      melee: 1,
+      damageTrack: "3",
 
-    weapons: [
-      {
-        name: "Small Arms",
-        range: '12/18"',
-        arcs: "ALL",
-        ap: 2,
-        at: 2,
-        aa: 2,
-        loadouts: ["Limited Range", "Point Blank"]
-      },
-      {
-        name: "Plasma Grenades",
-        range: '10"/-"',
-        arcs: "ALL",
-        ap: 2,
-        at: 2,
-        aa: 0,
-        loadouts: ["Blast", "Cooldown (weapon)"]
+      weapons: [
+        {
+          name: "Small Arms",
+          range: '12/18"',
+          arcs: "ALL",
+          ap: 2,
+          at: 2,
+          aa: 2,
+          loadouts: ["Limited Range", "Point Blank"]
+        },
+        {
+          name: "Plasma Grenades",
+          range: '10"/-"',
+          arcs: "ALL",
+          ap: 2,
+          at: 2,
+          aa: 0,
+          loadouts: ["Blast", "Cooldown (weapon)"]
+        }
+      ],
+
+      tags: [],
+
+      upgrades: [
+        { id: "GRUNTS_FUEL_ROD", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Fuel Rod Cannons", cost: 15 },
+        { id: "GRUNTS_ELITE_MINOR", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Elite Minor (see card)", cost: 20 },
+        {
+          id: "GRUNTS_JACKAL_SUPPLICANT",
+          mode: "count",
+          label: "Jackal Upgrade: Up to 2 Elements become Jackal Supplicants (see card)",
+          max: 2,
+          costEach: 15
+        }
+      ],
+
+      upgradeWeapons: {
+        GRUNTS_FUEL_ROD: [
+          { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
+        ]
       }
-    ],
-
-    tags: [],
-
-    upgrades: [
-      { id: "GRUNTS_FUEL_ROD", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Fuel Rod Cannons", cost: 15 },
-      { id: "GRUNTS_ELITE_MINOR", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Elite Minor (see card)", cost: 20 },
-      { id: "GRUNTS_JACKAL_SUPPLICANT_X1", mode: "flat", label: "Jackal Upgrade: Up to 1 Element becomes Jackal Supplicant (see card)", cost: 15 },
-      { id: "GRUNTS_JACKAL_SUPPLICANT_X2", mode: "flat", label: "Jackal Upgrade: Up to 2 Elements become Jackal Supplicants (see card)", cost: 30 }
-    ],
-
-    upgradeWeapons: {
-      GRUNTS_FUEL_ROD: [
-        { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
-      ]
-    }
-  },
-
-  COV_JACKAL_ASSAULT: {
-    id: "COV_JACKAL_ASSAULT",
-    faction: "Covenant",
-    name: "Jackal Assault — Shock Unit",
-    type: "INF",
-    br: 1,
-    points: 120,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '8/12"',
-    react: "6/8",
-    soak: 0,
-    melee: 2,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 1, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Heroic Save(6+)", "Shield Wall"]
-  },
-
-  COV_GRUNT_HEAVIES: {
-    id: "COV_GRUNT_HEAVIES",
-    faction: "Covenant",
-    name: "Grunt Heavies — Heavy Weapons Unit",
-    type: "INF",
-    br: 2,
-    points: 100,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '6/9"',
-    react: "8/10",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 3, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Active Overwatch"],
-
-    upgrades: [
-      { id: "GRUNT_HEAVIES_PLASMA_CANNON_TEAM", mode: "flat", label: "Weapon Upgrade (required): 2 Elements become Plasma Cannon team", cost: 0 },
-      { id: "GRUNT_HEAVIES_FUEL_ROD_TEAM", mode: "flat", label: "Weapon Upgrade (required): 2 Elements become Fuel Rod Cannons team", cost: 0 },
-      { id: "GRUNT_HEAVIES_PLASMA_LAUNCHERS_TEAM", mode: "flat", label: "Weapon Upgrade (required): 2 Elements become Plasma Launchers team", cost: 0 },
-      { id: "GRUNT_HEAVIES_ULTRA_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Grunt Ultra Officer (see card)", cost: 20 }
-    ],
-
-    upgradeWeapons: {
-      GRUNT_HEAVIES_PLASMA_CANNON_TEAM: [
-        { name: "Plasma Cannon (upg)", range: '12/20"', arcs: "ALL", ap: 6, at: 3, aa: 2, loadouts: ["Move or Fire", "Point Blank", "Suppression(+1)"] }
-      ],
-      GRUNT_HEAVIES_FUEL_ROD_TEAM: [
-        { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
-      ],
-      GRUNT_HEAVIES_PLASMA_LAUNCHERS_TEAM: [
-        { name: "Plasma Launchers (upg)", range: '12/24"', arcs: "ALL", ap: 1, at: 4, aa: 6, loadouts: ["Lock On", "Devastating (FLY)"] }
-      ]
-    }
-  },
-
-  COV_JACKAL_MARKSMEN: {
-    id: "COV_JACKAL_MARKSMEN",
-    faction: "Covenant",
-    name: "Jackal Marksmen — Scout-Executors Unit",
-    type: "INF",
-    br: 2,
-    points: 140,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '8/12"',
-    react: "7/9",
-    soak: 0,
-    melee: 1,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Needle Rifle", range: '12/24"', arcs: "ALL", ap: 4, at: 1, aa: 0, loadouts: ["Cooldown (weapon)", "Lethal (1)", "Pinpoint (INF)"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Instinctive Shot"]
-  },
-
-  COV_DRONES: {
-    id: "COV_DRONES",
-    faction: "Covenant",
-    name: "Drones — Yanme’e Swarm",
-    type: ["INF","FLY"], // note: unit card is INF (FLY*)
-	countsAs: ["INF"],
-    br: 1,
-    points: 100,
-    elementsRule: { mode: "fixed", min: 5, max: 5 },
-
-    move: '10/15"',
-    react: "8/10",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 2, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Evasive (1)", "Flying Infantry", "Combat Specialists"],
-
-    upgrades: [
-      { id: "DRONES_ULTRA", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Drone Ultra (see card)", cost: 20 }
-    ]
-  },
-
-  COV_ELITE_WARRIORS: {
-    id: "COV_ELITE_WARRIORS",
-    faction: "Covenant",
-    name: "Elite Warriors — Sangheili Combat Unit",
-    type: "INF",
-    br: 2,
-    points: 150,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 3,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 3, aa: 2, loadouts: ["Point Blank", "Suppression(+1)"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Heroic Save(4+)"]
-  },
-
-  COV_ELITE_VENATORES: {
-    id: "COV_ELITE_VENATORES",
-    faction: "Covenant",
-    name: "Elite Venatores — Covenant Tank-Hunters",
-    type: "INF",
-    br: 2,
-    points: 160,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 3,
-    damageTrack: "5",
-
-    weapons: [
-      { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 3, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Elusive (ARM-1)", "Tank Hunter", "Heroic Save(5+)", "Big Game Hunters", "Combat Specialists"],
-
-    upgrades: [
-      { id: "VENATORES_FUEL_ROD_TEAM", mode: "flat", label: "Weapon Upgrade (required): 2 Elements become Fuel Rod Cannons team", cost: 0 },
-      { id: "VENATORES_OFFICER", mode: "flat", label: "Officer Upgrade: Small Arms Element becomes Huntsmaster (see card)", cost: 20 }
-    ],
-
-    upgradeWeapons: {
-      VENATORES_FUEL_ROD_TEAM: [
-        { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
-      ]
-    }
-  },
-
-  COV_ELITE_SPEC_OPS: {
-    id: "COV_ELITE_SPEC_OPS",
-    faction: "Covenant",
-    name: "Elite Spec Ops — Infiltration Unit",
-    type: "INF",
-    br: 3,
-    points: 210,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 4,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 5, at: 2, aa: 3, loadouts: ["Point Blank", "Suppression(+1)"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 4, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Cloaking", "Heroic Save(4+)", "Scrambled Motion Trackers", "Combat Specialists"],
-
-    upgrades: [
-      { id: "SPEC_OPS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Spec Ops Commandatus (see card)", cost: 30 }
-    ]
-  },
-
-  COV_ELITE_RANGERS: {
-    id: "COV_ELITE_RANGERS",
-    faction: "Covenant",
-    name: "Elite Rangers — Specialized Reconnaissance Unit",
-    type: ["INF","FLY"], // note: unit card is INF (FLY*)
-	countsAs: ["INF"],
-    br: 3,
-    points: 220,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 3,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 3, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Charges", range: '6"/-"', arcs: "ALL", ap: 2, at: 6, aa: 0, loadouts: ["Devastating (ARM)", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Fearless", "Heroic Save(4+)", "Grav Packs", "Combat Specialists"],
-
-    upgrades: [
-      { id: "RANGERS_PLASMA_REPEATERS_X1", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Plasma Repeaters (+10)", cost: 10 },
-      { id: "RANGERS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Elite Ranger Officer (see card)", cost: 30 }
-    ],
-
-    upgradeWeapons: {
-      RANGERS_PLASMA_REPEATERS_X1: [
-        { name: "Plasma Repeaters (upg)", range: '15/20"', arcs: "ALL", ap: 6, at: 2, aa: 4, loadouts: ["Point Blank", "Suppression(+1)"] }
-      ]
-    }
-  },
-
-  COV_ELITE_ULTRA_UNIT: {
-    id: "COV_ELITE_ULTRA_UNIT",
-    faction: "Covenant",
-    name: "Elite Ultra Unit — Evocati",
-    type: "INF",
-    br: 3,
-    points: 210,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 4,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 5, at: 4, aa: 2, loadouts: ["Point Blank", "Suppression(+2)"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 4, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Fearless", "Heroic Save(4+)", "Chosen of the Prophets", "Combat Specialists"],
-
-    upgrades: [
-      { id: "ELITE_ULTRA_ORBITAL_INSERTION", mode: "flat", label: "Death from Above: Gain Orbital Insertion loadout", cost: 30 },
-      { id: "ELITE_ULTRA_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Elite Ultra Officer (see card)", cost: 30 }
-    ]
-  },
-
-  // =========================
-  // ARMOURED
-  // =========================
-  COV_SCOUT_GHOST: {
-    id: "COV_SCOUT_GHOST",
-    faction: "Covenant",
-    name: "Scout Ghost — Type 32 Rapid Attack Vehicle",
-    type: "ARM",
-    br: 1,
-    points: 60, // EACH
-    elementsRule: { mode: "each", min: 1, max: 3 },
-
-    move: '12/18"',
-    react: "7/9",
-    soak: 3,
-    impact: 1,
-    damageTrack: "3-3",
-
-    weapons: [
-      { name: "Plasma Cannon", range: '15/20"', arcs: "FRONT", ap: 5, at: 3, aa: 2, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Aerial Insertion", "Diminutive"]
-  },
-
-  COV_STORM_GHOST: {
-    id: "COV_STORM_GHOST",
-    faction: "Covenant",
-    name: "Storm Ghost — Type 32 Rapid Attack Vehicle",
-    type: "ARM",
-    br: 2, // (1*) noted on card; keep actual BR here
-    points: 90, // EACH
-    elementsRule: { mode: "each", min: 1, max: 3 },
-
-    move: '12/18"',
-    react: "6/8",
-    soak: 3,
-    impact: 2,
-    damageTrack: "4-4",
-
-    weapons: [
-      { name: "Plasma Cannon", range: '15/20"', arcs: "FRONT", ap: 6, at: 4, aa: 2, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Aerial Insertion", "Diminutive", "Heroic Save(5+)", "High Value Target (1)"]
-  },
-
-  COV_REVENANT: {
-    id: "COV_REVENANT",
-    faction: "Covenant",
-    name: "Revenant — Type 48 Light Assault Gun Carriage",
-    type: "ARM",
-    br: 2,
-    points: 110, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '10/15"',
-    react: "8/9",
-    soak: 3,
-    impact: 3,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "Class-2 Plasma Mortar", range: '10/25"', arcs: "FRONT", ap: 7, at: 5, aa: 2, loadouts: ["Indirect Fire"] }
-    ],
-    tags: ["Aerial Insertion", "Boosted Gravity Propulsion Drive"]
-  },
-
-  COV_HUNTERS: {
-    id: "COV_HUNTERS",
-    faction: "Covenant",
-    name: "Hunters — Mgalekgolo Battle Congregation",
-    type: "ARM",
-    br: 2,
-    points: 125, // EACH (2 elements)
-    elementsRule: { mode: "each", min: 2, max: 2 },
-
-    move: '6/12"',
-    react: "10/11",
-    soak: 0,
-    melee: 6,
-    damageTrack: "6-6",
-
-    weapons: [
-      { name: "Assault Cannon", range: '20"/-"', arcs: "ALL", ap: 6, at: 6, aa: 2, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Battle Hardened (3)", "Aerial Insertion", "Hijack Resistant", "Hunter Shield", "Spirit Bond", "Armoured Infantry"]
-  },
-
-  COV_WRAITH: {
-    id: "COV_WRAITH",
-    faction: "Covenant",
-    name: "Wraith — Type 26 Assault Gun Carriage",
-    type: "ARM",
-    br: 5,
-    points: 270,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "11/12",
-    soak: 4,
-    impact: 2,
-    damageTrack: "5-5-5",
-
-    weapons: [
-      { name: "Plasma Mortar", range: '10/30"', arcs: "FRONT", ap: 12, at: 8, aa: 0, loadouts: ["Devastating (INF)", "Indirect Fire"] },
-      { name: "Medium Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Aerial Insertion", "Heavy Ordnance"]
-  },
-
-  COV_AA_WRAITH: {
-    id: "COV_AA_WRAITH",
-    faction: "Covenant",
-    name: "Anti-Air Wraith — Type 52 Anti-Aircraft Artillery",
-    type: "ARM",
-    br: 5,
-    points: 270,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "11/12",
-    soak: 4,
-    impact: 2,
-    damageTrack: "5-5-5",
-
-    weapons: [
-      { name: "Fuel Rod Battery", range: '15/30"', arcs: "FRONT", ap: 2, at: 12, aa: 14, loadouts: ["Devastating (ALL)"] },
-      { name: "Medium Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Aerial Insertion", "Scour the Skies"]
-  },
-
-  COV_LOCUST: {
-    id: "COV_LOCUST",
-    faction: "Covenant",
-    name: "Locust — Type 30 Excavation / Anti-Fortification Platform",
-    type: "ARM",
-    br: 5,
-    points: 270,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "10/11",
-    soak: 3,
-    impact: 3,
-    damageTrack: "5-4-4",
-
-    weapons: [
-      { name: "Focus Cannon", range: '10/30"', arcs: "ALL", ap: 6, at: 14, aa: 6, loadouts: ["Blast"] }
-    ],
-    tags: ["Stride", "Heroic Save(5+)", "Concentrated Beam"]
-  },
-
-  COV_SHADOW: {
-    id: "COV_SHADOW",
-    faction: "Covenant",
-    name: "Shadow — Type 26 Light Transport",
-    type: "ARM",
-    br: 3,
-    points: 150,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "10/11",
-    soak: 4,
-    impact: 2,
-    damageTrack: "5-5-5",
-
-    weapons: [
-      { name: "Plasma Cannon", range: '10/20"', arcs: "ALL", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Transport (1)"]
-  },
-
-  // =========================
-  // FLYERS
-  // =========================
-  COV_BANSHEE: {
-    id: "COV_BANSHEE",
-    faction: "Covenant",
-    name: "Banshee — Type 26B Ground Support Aircraft",
-    type: "FLY",
-    br: 2,
-    points: 100, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '18/24"',
-    react: "6/9",
-    soak: 3,
-    damageTrack: "5-4",
-
-    weapons: [
-      { name: "Heavy Fuel Rod Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 7, aa: 4, loadouts: ["Devastating (ARM)"] }
-    ],
-    tags: ["Evasive (2)", "Elusive (ALL-1)", "Momentum (10”)"]
-  },
-
-  COV_VAMPIRE: {
-    id: "COV_VAMPIRE",
-    faction: "Covenant",
-    name: "Vampire — Type 29 Close Support Fighter",
-    type: "FLY",
-    br: 5,
-    points: 270,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "10/12",
-    soak: 4,
-    damageTrack: "6-6-5",
-
-    weapons: [
-      { name: "Heavy Needle Cannon", range: '10/20"', arcs: "FRONT", ap: 4, at: 10, aa: 14, loadouts: ["Devastating (FLY)"] },
-      { name: "Automated Plasma Cannons", range: '15"/-"', arcs: "L & R", ap: 5, at: 6, aa: 4, loadouts: ["Point Blank", "Suppression(+2)"] }
-    ],
-    tags: ["Scour the Skies", "Stasis Cannon"]
-  },
-
-  // =========================
-  // ASF (Air Support Flyer)
-  // =========================
-  COV_PHANTOM: {
-    id: "COV_PHANTOM",
-    faction: "Covenant",
-    name: "Phantom — Type 52 Troop Carrier",
-    type: "ASF",
-    br: 4,
-    points: 200,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    damageTrack: "6-5-5",
-
-    weapons: [
-      { name: "Heavy Plasma Cannon", range: '15"/-"', arcs: "FRONT", ap: 6, at: 12, aa: 8, loadouts: ["Point Blank"] },
-      { name: "Plasma Cannons", range: '15"/-"', arcs: "L & R", ap: 8, at: 6, aa: 4, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Dust Off", "High Value Asset (1-1-2)"]
-  },
-
-  COV_SERAPH: {
-    id: "COV_SERAPH",
-    faction: "Covenant",
-    name: "Seraph — Type 31 Exoatmospheric Strike Fighter",
-    type: "ASF",
-    br: 3,
-    points: 180,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    damageTrack: "5-4-3",
-
-    weapons: [
-      { name: "Heavy Plasma Cannons", range: '20"/-"', arcs: "FRONT", ap: 15, at: 12, aa: 15, loadouts: ["Devastating (ALL)", "Point Blank"] }
-    ],
-    tags: ["High Value Asset (1-1-1)"]
-  },
-
-  // =========================
-  // CHARACTERS
-  // =========================
-  COV_ELITE_OFFICER: {
-    id: "COV_ELITE_OFFICER",
-    faction: "Covenant",
-    name: "Elite Officer — Warhost Obedientiary",
-    type: ["CHA","INF"],
-    br: 2,
-    points: 100,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "6/8",
-    soak: 0,
-    melee: 5,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 7, at: 7, aa: 6, loadouts: ["Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Attachment (ALL)", "Battle Hardened (3)", "Commanding Presence (12”)", "Heroic Save(3+)"]
-  },
-
-  COV_ZEALOT: {
-    id: "COV_ZEALOT",
-    faction: "Covenant",
-    name: "Elite Zealot — Warhost Leader",
-    type: ["CHA","INF"],
-    br: 3,
-    points: 160,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 8,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 7, at: 7, aa: 6, loadouts: ["Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Attachment (INF)", "Battle Hardened (6)", "Commanding Presence (6”)", "Fearless", "Heroic Save(3+)"]
-  },
-
-  COV_GOBLIN: {
-    id: "COV_GOBLIN",
-    faction: "Covenant",
-    name: "Grunt Goblin — Pnap-Pattern Battlesuit",
-    type: ["CHA","ARM"],
-    br: 6,
-    points: 320,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "8/9",
-    soak: 0,
-    melee: 8,
-    damageTrack: "4-4-4",
-
-    weapons: [
-      { name: "Goblin Needle Cannon (Loadout)", range: '10/20"', arcs: "ALL", ap: 11, at: 5, aa: 9, loadouts: ["Point Blank", "Lethal (1)"] },
-      { name: "Goblin Focus Cannon (Loadout)", range: '10/20"', arcs: "ALL", ap: 6, at: 14, aa: 6, loadouts: ["Devastating (ARM)", "Blast"] }
-    ],
-
-    tags: ["Stride", "Heroic Save(3+)", "Battle Hardened (6)", "High Value Target (1)", "Running Riot", "Engage Thrusters!", "Shardstorm Launcher", "SMASH YOU!"]
-  },
-
-  // =========================
-  // UPGRADE-ONLY “CARDS” (optional to keep here for now)
-  // These exist so your IDs referenced by upgrades are valid “units”.
-  // They are not directly selectable as normal units (you can enforce that later).
-  // =========================
-/*  COV_JACKAL_SUPPLICANT: {
-    id: "COV_JACKAL_SUPPLICANT",
-    faction: "Covenant",
-    name: "Jackal Supplicant — Shield Base (UPG)",
-    type: "INF",
-    br: 0,
-    points: 15,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "8/10",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 2, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Heroic Save(6+)", "Shield Wall"],
-    upgrades: []
-  },
-
-  COV_ELITE_MINOR: {
-    id: "COV_ELITE_MINOR",
-    faction: "Covenant",
-    name: "Elite Minor — Overseer Base (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/10",
-    soak: 0,
-    melee: 3,
-    damageTrack: "5",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 3, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (1)", "Heroic Save(4+)"],
-    upgrades: []
-  },
-
-  COV_GRUNT_ULTRA_OFFICER: {
-    id: "COV_GRUNT_ULTRA_OFFICER",
-    faction: "Covenant",
-    name: "Grunt Ultra Officer — Unggoy Unit Leader (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 3, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Active Overwatch", "Heroic Save(4+)"],
-    upgrades: []
-  },
-
-  COV_DRONE_ULTRA: {
-    id: "COV_DRONE_ULTRA",
-    faction: "Covenant",
-    name: "Drone Ultra — Swarm Leader (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '10/15"',
-    react: "7/9",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Limited Range", "Point Blank"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Evasive (1)", "Heroic Save(4+)", "Flying Infantry"],
-    upgrades: []
-  }
-  */
-},
-  
-Banished: {
-  // =========================
-  // INFANTRY
-  // =========================
-  BAN_GRUNTS: {
-    id: "BAN_GRUNTS",
-    faction: "Banished",
-    name: "Grunts — Conscripts Unit",
-    type: "INF",
-    br: 1,
-    points: 50,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '6/9"',
-    react: "9/11",
-    soak: 0,
-    melee: 1,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 2, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 2, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: [],
-
-    upgrades: [
-      { id: "GRUNTS_FUEL_ROD", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Fuel Rod Cannons (+15)", cost: 15 },
-      { id: "GRUNTS_PLASMA_LAUNCHERS", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Plasma Launchers (+15)", cost: 15 },
-      { id: "GRUNTS_ELITE_MERC_X1", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Elite Mercenary (see card)", cost: 20 },
-      { id: "GRUNTS_ELITE_MERC_X2", mode: "flat", label: "Warrior Upgrade: Up to 2 Elements become Elite Mercenaries (see card)", cost: 40 },
-      { id: "GRUNTS_BRUTE_MINOR_X1", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Brute Minor (see card)", cost: 20 },
-      { id: "GRUNTS_BRUTE_MINOR_X2", mode: "flat", label: "Warrior Upgrade: Up to 2 Elements become Brute Minors (see card)", cost: 40 }
-    ],
-
-    upgradeWeapons: {
-      GRUNTS_FUEL_ROD: [
-        { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
-      ],
-      GRUNTS_PLASMA_LAUNCHERS: [
-        { name: "Plasma Launchers (upg)", range: '12/24"', arcs: "ALL", ap: 1, at: 4, aa: 6, loadouts: ["Lock On", "Devastating (FLY)"] }
-      ]
-    }
-  },
-
-  BAN_JACKAL_SKIRMISHERS: {
-    id: "BAN_JACKAL_SKIRMISHERS",
-    faction: "Banished",
-    name: "Jackal Skirmishers — Flanking Unit",
-    type: "INF",
-    br: 2,
-    points: 130,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '8/12"',
-    react: "5/7",
-    soak: 0,
-    melee: 1,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Evasive (1)", "Stride", "Heroic Save(6+)"],
-
-    upgrades: [
-      { id: "SKIRMISHERS_SHOCK_RIFLE", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Shock Rifle (+15)", cost: 15 },
-      { id: "SKIRMISHERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Skirmisher Captain (see card) (+15)", cost: 15 }
-    ],
-
-    upgradeWeapons: {
-      SKIRMISHERS_SHOCK_RIFLE: [
-        { name: "Shock Rifle (upg)", range: '12/24"', arcs: "ALL", ap: 4, at: 4, aa: 2, loadouts: ["Immobilize (3)"] }
-      ]
-    }
-  },
-
-  BAN_BRUTE_WARRIORS: {
-    id: "BAN_BRUTE_WARRIORS",
-    faction: "Banished",
-    name: "Brute Warriors — Jiralhanae Pack",
-    type: "INF",
-    br: 2,
-    points: 160,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "8/10",
-    soak: 0,
-    melee: 4,
-    damageTrack: "4-4",
-
-    weapons: [
-      { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 4, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Primal Rage"],
-
-    upgrades: [
-      { id: "BRUTES_CHOSEN_WARRIOR", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Chosen Warrior (see card) (+15)", cost: 15 },
-      { id: "BRUTES_RAVAGER", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Ravager (+15)", cost: 15 },
-      { id: "BRUTES_BRUTE_SHOT", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Brute Shot (+15)", cost: 15 }
-    ],
-
-    upgradeWeapons: {
-      BRUTES_RAVAGER: [
-        { name: "Ravager (upg)", range: '15/20"', arcs: "ALL", ap: 6, at: 2, aa: 4, loadouts: ["Indirect Fire", "Underslung Blade"] }
-      ],
-      BRUTES_BRUTE_SHOT: [
-        { name: "Brute Shot (upg)", range: '20"/-"', arcs: "ALL", ap: 6, at: 4, aa: 2, loadouts: ["Blast", "Underslung Blade"] }
-      ]
-    }
-  },
-
-  BAN_BRUTE_JUMPERS: {
-    id: "BAN_BRUTE_JUMPERS",
-    faction: "Banished",
-    name: "Brute Jumpers — Anti-Armour Jiralhanae",
-    type: "INF",
-    br: 3,
-    points: 210,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/9"',
-    react: "8/9",
-    soak: 0,
-    melee: 4,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Elusive (ARM-1)", "Battle Hardened (3)", "Fearless", "Sundering (ARM)", "Jump Packs", "Combat Specialists"],
-
-    upgrades: [
-      { id: "JUMPERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Upgrade 1 Element to Jumper Captain (see card) (+30)", cost: 30 }
-    ]
-  },
-
-  BAN_BRUTE_BERSERKERS: {
-    id: "BAN_BRUTE_BERSERKERS",
-    faction: "Banished",
-    name: "Brute Berserkers — Specialist Assault Infantry",
-    type: "INF",
-    br: 3,
-    points: 210,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '8/12"',
-    react: "7/8",
-    soak: 0,
-    melee: 5,
-    damageTrack: "5-5",
-
-    weapons: [],
-
-    tags: ["Fearless", "Sundering (INF)", "Drop Shock", "Berserk", "Combat Specialists"],
-
-    upgrades: [
-      { id: "BERSERKERS_ORBITAL_INSERTION", mode: "flat", label: "Death from Above: Gain Orbital Insertion loadout (+40)", cost: 40 },
-      { id: "BERSERKERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Upgrade 1 Element to Berserker Captain (see card) (+30)", cost: 30 }
-    ]
-  },
-
-  // =========================
-  // ARMOURED
-  // =========================
-  BAN_TERROR_CHOPPER: {
-    id: "BAN_TERROR_CHOPPER",
-    faction: "Banished",
-    name: "Terror Chopper — Frontline Assault Vehicle",
-    type: "ARM",
-    br: 2,
-    points: 100, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '12/15"',
-    react: "7/9",
-    soak: 3,
-    impact: 4,
-    damageTrack: "5-4",
-
-    weapons: [
-      { name: "Auto Cannons", range: '15"/-"', arcs: "FRONT", ap: 5, at: 4, aa: 3, loadouts: ["Point Blank", "Suppression(+1)"] }
-    ],
-
-    tags: ["Aerial Insertion", "Devastating Impact (2)", "Stride", "Relentless Ram", "Cossack Raiders"]
-  },
-
-  BAN_IRONCLAD_HUNTERS: {
-    id: "BAN_IRONCLAD_HUNTERS",
-    faction: "Banished",
-    name: "Ironclad Hunters — Mgalekgolo Guardians",
-    type: "ARM",
-    br: 2,
-    points: 125, // EACH (2 elements)
-    elementsRule: { mode: "each", min: 2, max: 2 },
-
-    move: '6/9"',
-    react: "10/11",
-    soak: 1,
-    melee: 4,
-    damageTrack: "6-6",
-
-    weapons: [
-      { name: "Beam Cannon", range: '20"/-"', arcs: "ALL", ap: 7, at: 7, aa: 4, loadouts: ["Point Blank", "Suppression(+1)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Aerial Insertion", "Hijack Resistant", "Spirit Bond", "Hunter Shield", "Armoured Infantry"]
-  },
-
-  BAN_REAVER: {
-    id: "BAN_REAVER",
-    faction: "Banished",
-    name: "Reaver",
-    type: "ARM",
-    br: 3,
-    points: 180,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "9/10",
-    soak: 3,
-    impact: 3,
-    damageTrack: "8-6",
-
-    weapons: [
-      { name: "Missile Pods", range: '10/30"', arcs: "ALL", ap: 2, at: 8, aa: 12, loadouts: ["Lock On", "Devastating (FLY)", "Armour-Piercing (2)"] },
-      { name: "Auto Cannon", range: '15"/-"', arcs: "FRONT", ap: 6, at: 4, aa: 4, loadouts: ["Point Blank", "Suppression(+1)"] }
-    ],
-
-    tags: ["Aerial Insertion", "Stride", "Scour the Skies", "Rocket Burn"]
-  },
-
-  BAN_TERROR_WRAITH: {
-    id: "BAN_TERROR_WRAITH",
-    faction: "Banished",
-    name: "Terror Wraith — Close Assault Tank",
-    type: "ARM",
-    br: 6,
-    points: 310,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "11/12",
-    soak: 3,
-    impact: 8,
-    damageTrack: "7-6-6",
-
-    weapons: [
-      { name: "Volatile Plasma Mortar", range: '12/24"', arcs: "FRONT", ap: 12, at: 8, aa: 0, loadouts: ["Inferno (3)", "Armour-Piercing (2)"] },
-      { name: "Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank", "Suppression(+1)"] }
-    ],
-
-    tags: ["Devastating Impact (4)", "Relentless Ram", "Reinforced Armor Plating"]
-  },
-
-  BAN_WAR_SKIFF: {
-    id: "BAN_WAR_SKIFF",
-    faction: "Banished",
-    name: "War-Skiff — Qavardu Workshop Transport",
-    type: "ARM",
-    br: 3,
-    points: 150,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '10/15"',
-    react: "8/10",
-    soak: 3,
-    impact: 4,
-    damageTrack: "6-5-4",
-
-    weapons: [
-      { name: "Missile Launchers", range: '10/20"', arcs: "F", ap: 2, at: 6, aa: 8, loadouts: ["Lock On", "Devastating (FLY)"] },
-      { name: "Light Plasma Cannon", range: '10/20"', arcs: "ALL", ap: 6, at: 4, aa: 3, loadouts: ["Limited Range", "Point Blank"] }
-    ],
-
-    tags: ["Transport (1)"]
-  },
-
-  // =========================
-  // FLYERS
-  // =========================
-  BAN_TERROR_BANSHEE: {
-    id: "BAN_TERROR_BANSHEE",
-    faction: "Banished",
-    name: "Terror Banshee — Kaelum Workshop Ground Support Aircraft",
-    type: "FLY",
-    br: 2,
-    points: 120, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '15/20"',
-    react: "7/9",
-    soak: 4,
-    damageTrack: "6-5",
-
-    weapons: [
-      { name: "Volatile Fuel Rod Cannon", range: '10/20"', arcs: "FRONT", ap: 4, at: 8, aa: 6, loadouts: ["Devastating (ARM/FLY)"] }
-    ],
-
-    tags: ["Evasive (1)", "Elusive (ALL-1)", "Momentum (10”)"]
-  },
-
-  // =========================
-  // ASF (Air Support Flyer)
-  // =========================
-  BAN_PHANTOM: {
-    id: "BAN_PHANTOM",
-    faction: "Banished",
-    name: "Phantom — Warrior Transport",
-    type: "ASF",
-    br: 4,
-    points: 200,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    damageTrack: "6-5-5",
-
-    weapons: [
-      { name: "Heavy Plasma Cannons", range: '15"/-"', arcs: "F", ap: 6, at: 12, aa: 8, loadouts: ["Point Blank"] },
-      { name: "Plasma Cannons", range: '15"/-"', arcs: "L & R", ap: 8, at: 6, aa: 4, loadouts: ["Point Blank"] }
-    ],
-    tags: ["Dust Off", "High Value Asset (1-1-2)"]
-  },
-
-  BAN_GRIEVER: {
-    id: "BAN_GRIEVER",
-    faction: "Banished",
-    name: "Griever — Fighter-Bomber",
-    type: "ASF",
-    br: 3,
-    points: 180,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    damageTrack: "5-5-4",
-
-    weapons: [
-      { name: "Mortar", range: '15"/-"', arcs: "FRONT", ap: 12, at: 1, aa: 0, loadouts: ["Devastating (INF)"] },
-      { name: "Ultra Light Plasma Lance", range: '15"/-"', arcs: "FRONT", ap: 2, at: 13, aa: 6, loadouts: ["Devastating (ARM)"] }
-    ],
-    tags: ["High Value Asset (1-1-1)"]
-  },
-
-  // =========================
-  // CHARACTERS
-  // =========================
-  BAN_BRUTE_CAPTAIN: {
-    id: "BAN_BRUTE_CAPTAIN",
-    faction: "Banished",
-    name: "Brute Captain — Pack Alpha",
-    type: ["CHA","INF"],
-    br: 2,
-    points: 130,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 6,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "Ravager (loadout)", range: '15/20"', arcs: "ALL", ap: 7, at: 3, aa: 5, loadouts: ["Indirect Fire", "Underslung Blade"] },
-      { name: "Brute Shot (loadout)", range: '20"/-"', arcs: "ALL", ap: 7, at: 5, aa: 3, loadouts: ["Blast", "Underslung Blade"] },
-      { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Attachment (INF)", "Battle Hardened (4)", "Intimidating Presence (12”)", "Heroic Save(4+)", "Weapon Drop", "Primal Rage"],
-
-    upgrades: [
-      { id: "CAPTAIN_SKEWER", mode: "flat", label: "Weapon Upgrade: Add Skewer (upg)", cost: 0 }
-    ],
-    upgradeWeapons: {
-      CAPTAIN_SKEWER: [
-        { name: "Skewer (upg)", range: '12/24"', arcs: "ALL", ap: 4, at: 12, aa: 4, loadouts: ["Cooldown (weapon)", "Armour-Piercing (2)"] }
-      ]
-    }
-  },
-
-  BAN_CHIEFTAIN: {
-    id: "BAN_CHIEFTAIN",
-    faction: "Banished",
-    name: "Brute Chieftain — Pack Leader",
-    type: ["CHA","INF"],
-    br: 3,
-    points: 180,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "7/9",
-    soak: 2,
-    melee: 9,
-    damageTrack: "6-6",
-
-    weapons: [
-      { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Attachment (INF)", "Battle Hardened (5)", "Intimidating Presence 2 (12”)", "Fearless", "Sundering (ARM)", "Heroic Save(4+)", "Gravity Hammer Slam", "Primal Rage"]
-  },
-
-BAN_BLOODSTAR: {
-  id: "BAN_BLOODSTAR",
-  faction: "Banished",
-  name: "Bloodstar — Stalker/Executioner Unit",
-  type: ["CHA","INF"],
-  br: 3,                     // printed BR 3 (HVT (1) reduces during force building; keep printed here)
-  points: 120,
-  elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-  move: '8/12"',
-  react: "6/8",
-  soak: 0,
-  melee: 6,
-  damageTrack: "4-4",
-
-  weapons: [
-    {
-      name: "Small Arms",
-      range: '10/20"',
-      arcs: "ALL",
-      ap: 9,
-      at: 7,
-      aa: 7,
-      loadouts: ["Point Blank", "Lethal (1)"]
     },
-    {
-      name: "Plasma Grenades",
-      range: '10"/-"',
-      arcs: "ALL",
-      ap: 5,
-      at: 3,
-      aa: 0,
-      loadouts: ["Blast", "Cooldown (weapon)"]
-    }
-  ],
 
-  tags: [
-    "Battle Hardened (6)",
-    "Deadly (1)",
-    "Fearless",
-    "Cloaking",
-    "Heroic Save(3+)",
-    "High Value Target (1)",
-    "Little Demons"
-  ],
-
-  upgrades: []
-},
-
-BAN_HUNTER_CAPTAIN: {
-  id: "BAN_HUNTER_CAPTAIN",
-  faction: "Banished",
-  name: "Hunter Captain — Mgalekgolo Officer",
-  type: ["CHA","ARM"],
-  br: 6,
-  points: 350,
-  elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-  move: '8/12"',
-  react: "8/10",
-  soak: 2,
-  melee: 9,
-  damageTrack: "7-6-6",
-
-  weapons: [
-    {
-      name: "Siphon Cannon",
-      range: '20"/-"',
-      arcs: "ALL",
-      ap: 16,
-      at: 16,
-      aa: 12,
-      loadouts: ["Point Blank", "Armour-Piercing (2)"]
-    }
-  ],
-
-  tags: [
-    "Battle Hardened (3)",
-    "Intimidating Presence 2 (12”)",
-    "Commanding Presence (HUNTER) (12”)",
-    "Fearless",
-    "Sundering (ALL)",
-    "Running Riot",
-    "Hunter Shield",
-    "Siphon Regeneration"
-  ],
-
-  upgrades: []
-},
-
-  // =========================
-  // UPGRADE-ONLY “CARDS” (optional to keep here for now)
-  // =========================
-/*  BAN_ELITE_MERCENARY: {
-    id: "BAN_ELITE_MERCENARY",
-    faction: "Banished",
-    name: "Elite Mercenary — Overseer Base (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/10",
-    soak: 0,
-    melee: 3,
-    damageTrack: "5",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 2, aa: 3, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 3, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (1)", "Heroic Save(4+)"],
-    upgrades: []
-  },
-
-  BAN_BRUTE_MINOR: {
-    id: "BAN_BRUTE_MINOR",
-    faction: "Banished",
-    name: "Brute Minor — Overseer Base (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "9/10",
-    soak: 0,
-    melee: 4,
-    damageTrack: "4-3",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Spike Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (1)", "Primal Rage"],
-    upgrades: []
-  },
-
-  BAN_SKIRMISHER_CAPTAIN: {
-    id: "BAN_SKIRMISHER_CAPTAIN",
-    faction: "Banished",
-    name: "Skirmisher Captain — Flanking Unit Leader (UPG)",
-    type: "INF",
-    br: 0,
-    points: 15,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "5/6",
-    soak: 0,
-    melee: 2,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Limited Range", "Point Blank"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Evasive (1)", "Stride", "Heroic Save(5+)"],
-    upgrades: []
-  },
-
-  BAN_CHOSEN_WARRIOR: {
-    id: "BAN_CHOSEN_WARRIOR",
-    faction: "Banished",
-    name: "Chosen Warrior — Pack Overseer (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 5,
-    damageTrack: "4-4",
-
-    weapons: [
-      { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Battle Hardened (2)", "Heroic Save(5+)", "Primal Rage"],
-    upgrades: []
-  },
-
-  BAN_JUMPER_CAPTAIN: {
-    id: "BAN_JUMPER_CAPTAIN",
-    faction: "Banished",
-    name: "Jumper Captain — Assault Leader (UPG)",
-    type: "INF",
-    br: 0,
-    points: 30,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/9"',
-    react: "7/9",
-    soak: 0,
-    melee: 5,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Elusive (ARM-1)", "Heroic Save(5+)", "Battle Hardened (3)", "Fearless", "Sundering (ARM)", "Salvager", "Jump Packs"],
-    upgrades: []
-  },
-
-  BAN_BERSERKER_CAPTAIN: {
-    id: "BAN_BERSERKER_CAPTAIN",
-    faction: "Banished",
-    name: "Berserker Captain — Black Tempest Berserker (UPG)",
-    type: "INF",
-    br: 0,
-    points: 30,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "6/7",
-    soak: 0,
-    melee: 6,
-    damageTrack: "5-5",
-
-    weapons: [],
-
-    tags: ["Fearless", "Sundering (INF)", "Heroic Save(5+)", "Drop Shock", "Berserk"],
-    upgrades: []
-  }
-  */
-},
-  
-Forerunners: {
-  // =========================
-  // INFANTRY — PROMETHEAN
-  // =========================
-  FOR_CRAWLER_PACK: {
-    id: "FOR_CRAWLER_PACK",
-    faction: "Forerunners",
-    name: "Crawler Pack — Aggressive Automatons",
-    type: "INF",
-    br: 1,
-    points: 80,
-    elementsRule: { mode: "fixed", min: 5, max: 5 },
-
-    move: '8/12"',
-    react: "8/10",
-    soak: 0,
-    melee: 2,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '15"/-"', arcs: "ALL", ap: 2, at: 2, aa: 1, loadouts: [] }
-    ],
-
-    tags: ["Stride"],
-
-    upgrades: [
-      { id: "CRAWLER_ALPHA_X1", mode: "flat", label: "Crawler Alpha: Up to 1 Element upgrades to Crawler Alpha (+10)", cost: 10 },
-      { id: "CRAWLER_ALPHA_X2", mode: "flat", label: "Crawler Alpha: Up to 2 Elements upgrade to Crawler Alpha (+10 each)", cost: 20 }
-    ]
-  },
-
-  FOR_CRAWLER_SNIPER: {
-    id: "FOR_CRAWLER_SNIPER",
-    faction: "Forerunners",
-    name: "Crawler Snipers — Automaton Executors",
-    type: "INF",
-    br: 2,
-    points: 120,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '8/12"',
-    react: "7/9",
-    soak: 0,
-    melee: 2,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Small Arms", range: '15"/-"', arcs: "ALL", ap: 2, at: 2, aa: 1, loadouts: [] },
-      { name: "Binary Rifles", range: '15/30"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Cooldown (weapon)", "Lock On", "Lethal (1)", "Pinpoint (ALL)"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Stride"],
-
-    upgrades: [
-      { id: "CRAWLER_BINARY_TEAM", mode: "flat", label: "Weapon Upgrade (required): 2 Elements become Binary Rifle Team (no cost)", cost: 0 }
-    ]
-  },
-
-  FOR_WATCHERS: {
-    id: "FOR_WATCHERS",
-    faction: "Forerunners",
-    name: "Watchers — Combat Support",
-    type: ["INF","FLY"],               // keep INF; they're “INF (FLY*)” via special rule
-	countsAs: ["INF"],
-    br: 2,
-    points: 140,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '10/15"',
-    react: "8/10",
-    soak: 0,
-    melee: 1,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 2, at: 1, aa: 1, loadouts: ["Limited Range", "Point Blank"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Evasive (1)", "Flying Infantry", "Support Protocols", "Combat Specialists"],
-    upgrades: []
-  },
-
-  FOR_SOLDIERS: {
-    id: "FOR_SOLDIERS",
-    faction: "Forerunners",
-    name: "Soldiers — Armiger Combat Constructs",
-    type: "INF",
-    br: 2,
-    points: 150,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '6/12"',
-    react: "7/9",
-    soak: 0,
-    melee: 1,
-    damageTrack: "5",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Suppression(+1)"] },
-      { name: "Scattershot", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Light Rifle", range: '16/24"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Lock On"] },
-      { name: "Splinter Grenade", range: '10"/-"', arcs: "ALL", ap: 2, at: 3, aa: 0, loadouts: ["Immobilize (2)", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Heroic Save(5+)", "Fearless"],
-
-    upgrades: [
-      { id: "SOLDIERS_SCATTERSHOT_X1", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Scattershot (+10)", cost: 10 },
-      { id: "SOLDIERS_SCATTERSHOT_X2", mode: "flat", label: "Weapon Upgrade: Up to 2 Elements become Scattershot (+10 each)", cost: 20 },
-      { id: "SOLDIERS_LIGHT_RIFLE_X1", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Light Rifle (+10)", cost: 10 },
-      { id: "SOLDIERS_LIGHT_RIFLE_X2", mode: "flat", label: "Weapon Upgrade: Up to 2 Elements become Light Rifle (+10 each)", cost: 20 }
-    ],
-
-    upgradeWeapons: {
-      SOLDIERS_SCATTERSHOT_X1: [{ name: "Scattershot (upg)", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] }],
-      SOLDIERS_SCATTERSHOT_X2: [{ name: "Scattershot (upg)", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] }],
-      SOLDIERS_LIGHT_RIFLE_X1: [{ name: "Light Rifle (upg)", range: '16/24"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Lock On"] }],
-      SOLDIERS_LIGHT_RIFLE_X2: [{ name: "Light Rifle (upg)", range: '16/24"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Lock On"] }]
-    }
-  },
-
-  FOR_SOLDIER_ENFORCERS: {
-    id: "FOR_SOLDIER_ENFORCERS",
-    faction: "Forerunners",
-    name: "Soldier Enforcers — Heavy Support Armigers",
-    type: "INF",
-    br: 3,
-    points: 210,
-    elementsRule: { mode: "fixed", min: 3, max: 3 },
-
-    move: '6/12"',
-    react: "8/9",
-    soak: 0,
-    melee: 2,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Scattershot", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Splinter Cannon", range: '10/20"', arcs: "ALL", ap: 3, at: 5, aa: 1, loadouts: ["Devastating (ARM)"] },
-      { name: "Hydra", range: '12/24"', arcs: "ALL", ap: 1, at: 3, aa: 5, loadouts: ["Devastating (FLY)", "Blast"] },
-      { name: "Splinter Grenade", range: '10"/-"', arcs: "ALL", ap: 3, at: 4, aa: 0, loadouts: ["Immobilize (2)", "Cooldown (weapon)"] }
-    ],
-
-    tags: ["Heroic Save(4+)", "Battle Hardened (1)", "Fearless", "Active Overwatch", "Combat Specialists"],
-
-    upgrades: [
-      { id: "ENFORCERS_TEAM_SPLINTER", mode: "flat", label: "Weapon Upgrade: 3 Elements become Splinter Cannon Team (no cost listed)", cost: 0 },
-      { id: "ENFORCERS_TEAM_HYDRA", mode: "flat", label: "Weapon Upgrade: 3 Elements become Hydra Team (no cost listed)", cost: 0 }
-    ]
-  },
-
-  // =========================
-  // INFANTRY — SENTINEL
-  // =========================
-  FOR_AGGRESSOR_SENTINELS: {
-    id: "FOR_AGGRESSOR_SENTINELS",
-    faction: "Forerunners",
-    name: "Aggressors — Security Sentinels",
-    type: ["INF","FLY"],               // keep INF; they're “INF (FLY*)” via special rule
-	countsAs: ["INF"],
-    br: 1,
-    points: 110,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '10/15"',
-    react: "8/8",
-    soak: 0,
-    melee: 1,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 3, at: 1, aa: 2, loadouts: ["Suppression(+1)"] }
-    ],
-
-    tags: ["Heroic Save(6+)", "Flying Infantry"],
-
-    upgrades: [
-      { id: "AGGRESSOR_ELIMINATOR", mode: "flat", label: "Sentinel Eliminator: Up to 1 Element upgrades to Aggressor Eliminator (+20)", cost: 20 }
-    ]
-  },
-
-  FOR_REGULATOR_SENTINELS: {
-    id: "FOR_REGULATOR_SENTINELS",
-    faction: "Forerunners",
-    name: "Regulators — Manager Sentinels",
-    type: ["INF","FLY"],               // keep INF; they're “INF (FLY*)” via special rule
-	countsAs: ["INF"],
-    br: 2,
-    points: 150,
-    elementsRule: { mode: "fixed", min: 4, max: 4 },
-
-    move: '10/15"',
-    react: "9/9",
-    soak: 0,
-    melee: 2,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 3, at: 1, aa: 2, loadouts: ["Suppression(+1)"] },
-      { name: "Regulator Shock", range: '16/24"', arcs: "ALL", ap: 2, at: 5, aa: 6, loadouts: ["Lock On", "Immobilize (2)"] }
-    ],
-
-    tags: ["Heroic Save(5+)", "Active Overwatch", "Flying Infantry"],
-
-    upgrades: [
-      { id: "REGULATOR_SHOCK_TEAM", mode: "flat", label: "Weapon Upgrade (required): 2 Elements become Regulator Shock Team (no cost)", cost: 0 }
-    ]
-  },
-
-  // =========================
-  // ARMOURED — PROMETHEAN
-  // =========================
-  FOR_KNIGHT: {
-    id: "FOR_KNIGHT",
-    faction: "Forerunners",
-    name: "Knight — Promethean Warrior",
-    type: "ARM",
-    br: 2,
-    points: 110, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '6/12"',
-    react: "8/10",
-    soak: 0,
-    melee: 6,
-    damageTrack: "6-4",
-
-    weapons: [
-      { name: "Scattershot (Loadout)", range: '12/18"', arcs: "ALL", ap: 7, at: 4, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Light Rifle (Loadout)", range: '16/24"', arcs: "ALL", ap: 6, at: 4, aa: 4, loadouts: ["Lock On"] }
-    ],
-
-    tags: ["Battle Hardened (3)", "Aerial Insertion", "Stride", "Hijack Resistant", "Armoured Infantry", "Watcher Support"],
-
-    upgrades: [
-      { id: "KNIGHT_LOADOUT_SCATTERSHOT", mode: "flat", label: "Loadout: Scattershot (record on force list)", cost: 0 },
-      { id: "KNIGHT_LOADOUT_LIGHT_RIFLE", mode: "flat", label: "Loadout: Light Rifle (record on force list)", cost: 0 }
-    ]
-  },
-
-  FOR_KNIGHT_LANCER: {
-    id: "FOR_KNIGHT_LANCER",
-    faction: "Forerunners",
-    name: "Knight Lancer — Scout Marksmen",
-    type: "ARM",
-    br: 2,
-    points: 130, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '6/12"',
-    react: "7/9",
-    soak: 0,
-    melee: 6,
-    damageTrack: "6-4",
-
-    weapons: [
-      { name: "Binary Rifle (Loadout)", range: '15/30"', arcs: "ALL", ap: 8, at: 3, aa: 6, loadouts: ["Cooldown (weapon)", "Lock On", "Lethal (1)", "Pinpoint (ALL)"] }
-    ],
-
-    tags: ["Battle Hardened (3)", "Aerial Insertion", "Stride", "Hijack Resistant", "Armoured Infantry", "Watcher Support", "Scouting Translocation"],
-
-    upgrades: []
-  },
-
-  FOR_KNIGHT_BATTLEWAGON: {
-    id: "FOR_KNIGHT_BATTLEWAGON",
-    faction: "Forerunners",
-    name: "Knight Battlewagon — Siege Master",
-    type: "ARM",
-    br: 2,
-    points: 140, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '6/12"',
-    react: "8/10",
-    soak: 0,
-    melee: 6,
-    damageTrack: "7-5",
-
-    weapons: [
-      { name: "Incineration Cannon (Loadout)", range: '12/24"', arcs: "ALL", ap: 5, at: 7, aa: 2, loadouts: ["Cooldown (weapon)", "Devastating (ARM)", "Armour-Piercing (1)"] }
-    ],
-
-    tags: ["Battle Hardened (4)", "Aerial Insertion", "Stride", "Hijack Resistant", "Armoured Infantry", "Watcher Support"],
-    upgrades: []
-  },
-
-  // =========================
-  // ARMOURED — SENTINEL
-  // =========================
-  FOR_SUPER_SENTINEL: {
-    id: "FOR_SUPER_SENTINEL",
-    faction: "Forerunners",
-    name: "Super Sentinel — Combat Support Drone",
-    type: "ARM",
-    br: 2,
-    points: 120, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '10/15"',
-    react: "9/9",
-    soak: 3,
-    impact: 3,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "High-Powered Cleansing Beam", range: '10/20"', arcs: "ALL", ap: 7, at: 6, aa: 4, loadouts: ["Point Blank"] }
-    ],
-
-    tags: ["Stride", "Heroic Save(5+)", "Hijack Resistant", "Suppressive Fire"],
-    upgrades: []
-  },
-
-  FOR_ERADICATOR_SENTINEL: {
-    id: "FOR_ERADICATOR_SENTINEL",
-    faction: "Forerunners",
-    name: "Eradicator — Autonomous Carapace",
-    type: "ARM",
-    br: 5,
-    points: 270,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "11/11",
-    soak: 2,
-    impact: 2,
-    damageTrack: "5-5-5",
-
-    weapons: [
-      { name: "Eradicator Beam", range: '12/24"', arcs: "FRONT", ap: 9, at: 9, aa: 9, loadouts: ["Beam Weapon (3)", "Inferno (2)"] },
-      { name: "Shard Projectors", range: '15"/-"', arcs: "FRONT", ap: 6, at: 2, aa: 4, loadouts: ["Point Blank"] }
-    ],
-
-    tags: ["Stride", "Heroic Save(6+)", "Hijack Resistant", "Concentrated Firepower"],
-    upgrades: []
-  },
-
-  // =========================
-  // FLYERS — SENTINEL
-  // =========================
-  FOR_PROTECTOR_SENTINEL: {
-    id: "FOR_PROTECTOR_SENTINEL",
-    faction: "Forerunners",
-    name: "Protector — Defensive Construct",
-    type: "FLY",
-    br: 2,
-    points: 120, // EACH
-    elementsRule: { mode: "each", min: 1, max: 2 },
-
-    move: '12/18"',
-    react: "8/8",
-    soak: 3,
-    damageTrack: "5-5",
-
-    weapons: [
-      { name: "Protector Beam Emitter", range: '10/20"', arcs: "FRONT", ap: 4, at: 8, aa: 4, loadouts: ["Devastating (ARM)"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Sentinel Escort", "Electromagnetic Self-Destruct"],
-    upgrades: []
-  },
-
-  FOR_ENFORCER_SENTINEL: {
-    id: "FOR_ENFORCER_SENTINEL",
-    faction: "Forerunners",
-    name: "Enforcer — Guard Sentinel",
-    type: "FLY",
-    br: 3,
-    points: 180,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '10/15"',
-    react: "9/9",
-    soak: 2,
-    damageTrack: "5-5-4",
-
-    weapons: [
-      { name: "Enforcer Missiles", range: '12/24"', arcs: "FRONT", ap: 7, at: 9, aa: 11, loadouts: ["Blast", "Indirect Fire"] },
-      { name: "Shard Projectors", range: '15"/-"', arcs: "FRONT", ap: 5, at: 2, aa: 3, loadouts: ["Point Blank"] }
-    ],
-
-    tags: ["Elusive (ALL-1)", "Forward Energy Shield", "Gravitic Grapplers"],
-    upgrades: []
-  },
-
-  // =========================
-  // FLYERS — FORERUNNER
-  // =========================
-  FOR_PHAETON: {
-    id: "FOR_PHAETON",
-    faction: "Forerunners",
-    name: "Z-1800 Phaeton — VTOL Weapon Ship",
-    type: "FLY",
-    br: 5,
-    points: 270,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '10/15"',
-    react: "8/10",
-    soak: 3,
-    damageTrack: "6-6-5",
-
-    weapons: [
-      { name: "Light Mass Cannons", range: '10/20"', arcs: "FRONT", ap: 10, at: 2, aa: 6, loadouts: ["Point Blank", "Suppression(+2)"] },
-      { name: "Pulse Missile Launchers", range: '12/24"', arcs: "FRONT", ap: 4, at: 14, aa: 12, loadouts: ["Lock On", "Devastating (FLY)"] }
-    ],
-
-    tags: ["Evasive (1)", "Scour the Skies", "Slipspace Translocation Jump"],
-    upgrades: []
-  },
-
-  // =========================
-  // ASF (Air Support Flyers)
-  // =========================
-  FOR_CONSTRUCTOR_SENTINEL_SWARM: {
-    id: "FOR_CONSTRUCTOR_SENTINEL_SWARM",
-    faction: "Forerunners",
-    name: "Constructor Sentinel Swarm",
-    type: "ASF",
-    br: 3,
-    points: 180,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    damageTrack: "4-4-4-4-4",
-    weapons: [],
-
-    tags: ["Heroic Save(5+)", "Evasive (1)", "Dust Off", "High Value Asset (1-0-1-0-1)", "Reconstitution Emitters"],
-    upgrades: []
-  },
-
-  FOR_DESPAIR_CLASS_FIGHTER: {
-    id: "FOR_DESPAIR_CLASS_FIGHTER",
-    faction: "Forerunners",
-    name: "Despair-Class Fighter",
-    type: "ASF",
-    br: 4,
-    points: 200,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    damageTrack: "6-5-5",
-    weapons: [
-      { name: "Despair Weapons Array", range: '20"/-"', arcs: "FRONT", ap: 12, at: 15, aa: 15, loadouts: ["Devastating (ALL)", "Armour-Piercing (2)"] }
-    ],
-
-    tags: ["High Value Asset (1-1-2)"],
-    upgrades: []
-  },
-
-  // =========================
-  // CHARACTERS — PROMETHEAN
-  // =========================
-  FOR_SOLDIER_COMMANDO: {
-    id: "FOR_SOLDIER_COMMANDO",
-    faction: "Forerunners",
-    name: "Soldier Commando — Armiger Overseer",
-    type: ["CHA","INF"],              
-    br: 2,
-    points: 130,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "6/8",
-    soak: 0,
-    melee: 4,
-    damageTrack: "6-3",
-
-    weapons: [
-      { name: "Scattershot (Loadout)", range: '12/18"', arcs: "ALL", ap: 8, at: 5, aa: 3, loadouts: ["Limited Range", "Point Blank"] },
-      { name: "Light Rifle (Loadout)", range: '16/24"', arcs: "ALL", ap: 7, at: 3, aa: 5, loadouts: ["Lock On"] },
-      { name: "Splinter Cannon (upg)", range: '10/20"', arcs: "ALL", ap: 4, at: 9, aa: 3, loadouts: ["Devastating (ARM)"] },
-      { name: "Splinter Grenade", range: '10"/-"', arcs: "ALL", ap: 4, at: 5, aa: 0, loadouts: ["Immobilize (2)", "Cooldown (weapon)"] }
-    ],
-
-    tags: [
-      "Heroic Save(3+)",
-      "Battle Hardened (2)",
-      "Fearless",
-      "Commanding Presence (9”)",
-      "Attachment (PROMETHEAN INF)",
-      "Weapon Drops",
-      "Enforcer Leader"
-    ],
-
-    upgrades: [
-      { id: "COMMANDO_LOADOUT_SCATTERSHOT", mode: "flat", label: "Loadout: Scattershot (record on force list)", cost: 0 },
-      { id: "COMMANDO_LOADOUT_LIGHT_RIFLE", mode: "flat", label: "Loadout: Light Rifle (record on force list)", cost: 0 }
-    ]
-  },
-
-  FOR_KNIGHT_COMMANDER: {
-    id: "FOR_KNIGHT_COMMANDER",
-    faction: "Forerunners",
-    name: "Knight Commander — Promethean Leader",
-    type: ["CHA","ARM"],   
-    br: 3,
-    points: 200,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '6/12"',
-    react: "7/9",
-    soak: 2,
-    melee: 9,
-    damageTrack: "7-6",
-
-    weapons: [
-      { name: "Dying Star Light Rifle", range: '16/24"', arcs: "ALL", ap: 9, at: 6, aa: 6, loadouts: ["Lock On", "Blast"] },
-      { name: "River of Light Incineration Cannon (upg)", range: '12/24"', arcs: "ALL", ap: 7, at: 10, aa: 4, loadouts: ["Devastating (ARM)", "Armour-Piercing (1)"] }
-    ],
-
-    tags: [
-      "Heroic Save(5+)",
-      "Battle Hardened (6)",
-      "Aerial Insertion",
-      "Stride",
-      "Commanding Presence (6”)",
-      "Attachment (PROMETHEAN KNIGHT)",
-      "Hijack Resistant",
-      "Weapon Drops",
-      "Armoured Infantry",
-      "Watcher Support"
-    ],
-
-    upgrades: []
-  },
-
-  FOR_WARDEN_ETERNAL: {
-    id: "FOR_WARDEN_ETERNAL",
-    faction: "Forerunners",
-    name: "Warden Eternal — Guardian of the Domain",
-    type: ["CHA","ARM"],
-    br: 6,
-    points: 350,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "7/9",
-    soak: 3,
-    melee: 9,
-    damageTrack: "8-6-6",
-
-    weapons: [
-      { name: "Hard Light Energy Beam", range: '15/30"', arcs: "FRONT", ap: 15, at: 6, aa: 6, loadouts: ["Lock On"] },
-      { name: "Homing Gravity Bomb", range: '10/20"', arcs: "ALL", ap: 4, at: 14, aa: 14, loadouts: ["Cooldown (weapon)", "Blast", "Indirect Fire", "Immobilize (3)"] }
-    ],
-
-    tags: [
-      "Heroic Save(5+)",
-      "Battle Hardened (6)",
-      "Sundering (ALL)",
-      "Deadly (1)",
-      "Fearless",
-      "Commanding Presence (12”)",
-      "Hijack Resistant",
-      "Running Riot",
-      "Exposed Armor (BACK)",
-      "You Cannot Escape My Wrath"
-    ],
-
-    upgrades: []
-  },
-
-  // =========================
-  // CHARACTERS — SENTINEL
-  // =========================
-  FOR_SUB_MONITOR: {
-    id: "FOR_SUB_MONITOR",
-    faction: "Forerunners",
-    name: "Sub-Monitor — Executor Ancilla",
-	type: ["CHA","INF","FLY"],
-	countsAs: ["CHA","INF"],    // counts toward CHAR + INF (caps), NOT FLY
-    br: 2,
-    points: 120,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '10/15"',
-    react: "6/6",
-    soak: 0,
-    melee: 3,
-    damageTrack: "6",
-
-    weapons: [
-      { name: "Sub-Monitor Laser", range: '10/20"', arcs: "ALL", ap: 7, at: 6, aa: 6, loadouts: ["Suppression(+2)", "Lethal (1)"] }
-    ],
-
-    tags: [
-      "Heroic Save(3+)",
-      "Fearless",
-      "Commanding Presence (12”)",
-      "Attachment (SENTINEL INF)",
-      "Flying Infantry",
-      "Please begin burning to death!"
-    ],
-
-    upgrades: []
-  },
-  
-FOR_SUB_MONITOR_ERADICATOR_CARAPACE: {
-  id: "FOR_SUB_MONITOR_ERADICATOR_CARAPACE",
-  faction: "Forerunners",
-  name: "Sub-Monitor in Eradicator Carapace",
-  type: ["CHA","ARM"],
-  br: 6,                     // printed BR
-  points: 320,
-  elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-  // key statline from your card text
-  move: '6/12"',
-  react: "10/10",
-  soak: 3,
-  impact: 3,
-  damageTrack: "5-5-5",
-
-  weapons: [
-    {
-      name: "Empowered Eradicator Beam",
-      range: '12/24"',
-      arcs: "FRONT",
-      ap: 11,
-      at: 11,
-      aa: 11,
-      loadouts: ["Beam Weapon (3)", "Inferno (3)", "Devastating (ALL)"]
+    COV_JACKAL_ASSAULT: {
+      id: "COV_JACKAL_ASSAULT",
+      faction: "Covenant",
+      name: "Jackal Assault — Shock Unit",
+      type: "INF",
+      br: 1,
+      points: 120,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '8/12"',
+      react: "6/8",
+      soak: 0,
+      melee: 2,
+      damageTrack: "4",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 1, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Heroic Save(6+)", "Shield Wall"]
     },
-    {
-      name: "Incineration Cannons",
-      range: '12/24"',
-      arcs: "FRONT",
-      ap: 5,
-      at: 7,
-      aa: 3,
-      loadouts: ["Devastating (ARM)", "Armour-Piercing (1)"]
+
+    COV_GRUNT_HEAVIES: {
+      id: "COV_GRUNT_HEAVIES",
+      faction: "Covenant",
+      name: "Grunt Heavies — Heavy Weapons Unit",
+      type: "INF",
+      br: 2,
+      points: 100,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '6/9"',
+      react: "8/10",
+      soak: 0,
+      melee: 1,
+      damageTrack: "3",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 3, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Active Overwatch"],
+
+      upgrades: [
+        {
+          id: "GRUNT_HEAVIES_PLASMA_CANNON_TEAM",
+          mode: "flat",
+          label: "Weapon Upgrade (required): 2 Elements become Plasma Cannon team",
+          cost: 0,
+          reqGroup: "GRUNT_HEAVIES_WEAPON_TEAM",
+          reqOneOf: true,
+          mutex: true,
+          reqLabel: "Weapon Team (required — choose 1)"
+        },
+        {
+          id: "GRUNT_HEAVIES_FUEL_ROD_TEAM",
+          mode: "flat",
+          label: "Weapon Upgrade (required): 2 Elements become Fuel Rod Cannons team",
+          cost: 0,
+          reqGroup: "GRUNT_HEAVIES_WEAPON_TEAM",
+          reqOneOf: true,
+          mutex: true,
+          reqLabel: "Weapon Team (required — choose 1)"
+        },
+        {
+          id: "GRUNT_HEAVIES_PLASMA_LAUNCHERS_TEAM",
+          mode: "flat",
+          label: "Weapon Upgrade (required): 2 Elements become Plasma Launchers team",
+          cost: 0,
+          reqGroup: "GRUNT_HEAVIES_WEAPON_TEAM",
+          reqOneOf: true,
+          mutex: true,
+          reqLabel: "Weapon Team (required — choose 1)"
+        },
+        {
+          id: "GRUNT_HEAVIES_ULTRA_OFFICER",
+          mode: "flat",
+          label: "Officer Upgrade: Up to 1 Element becomes Grunt Ultra Officer (see card)",
+          cost: 20
+        }
+      ],
+
+      upgradeWeapons: {
+        GRUNT_HEAVIES_PLASMA_CANNON_TEAM: [
+          { name: "Plasma Cannon (upg)", range: '12/20"', arcs: "ALL", ap: 6, at: 3, aa: 2, loadouts: ["Move or Fire", "Point Blank", "Suppression(+1)"] }
+        ],
+        GRUNT_HEAVIES_FUEL_ROD_TEAM: [
+          { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
+        ],
+        GRUNT_HEAVIES_PLASMA_LAUNCHERS_TEAM: [
+          { name: "Plasma Launchers (upg)", range: '12/24"', arcs: "ALL", ap: 1, at: 4, aa: 6, loadouts: ["Lock On", "Devastating (FLY)"] }
+        ]
+      }
+    },
+
+    COV_JACKAL_MARKSMEN: {
+      id: "COV_JACKAL_MARKSMEN",
+      faction: "Covenant",
+      name: "Jackal Marksmen — Scout-Executors Unit",
+      type: "INF",
+      br: 2,
+      points: 140,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '8/12"',
+      react: "7/9",
+      soak: 0,
+      melee: 1,
+      damageTrack: "4",
+
+      weapons: [
+        { name: "Needle Rifle", range: '12/24"', arcs: "ALL", ap: 4, at: 1, aa: 0, loadouts: ["Cooldown (weapon)", "Lethal (1)", "Pinpoint (INF)"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Instinctive Shot"]
+    },
+
+    COV_DRONES: {
+      id: "COV_DRONES",
+      faction: "Covenant",
+      name: "Drones — Yanme’e Swarm",
+      type: ["INF","FLY"],
+      countsAs: ["INF"],
+      br: 1,
+      points: 100,
+      elementsRule: { mode: "fixed", min: 5, max: 5 },
+
+      move: '10/15"',
+      react: "8/10",
+      soak: 0,
+      melee: 1,
+      damageTrack: "3",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 2, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Evasive (1)", "Flying Infantry", "Combat Specialists"],
+
+      upgrades: [
+        { id: "DRONES_ULTRA", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Drone Ultra (see card)", cost: 20 }
+      ]
+    },
+
+    COV_ELITE_WARRIORS: {
+      id: "COV_ELITE_WARRIORS",
+      faction: "Covenant",
+      name: "Elite Warriors — Sangheili Combat Unit",
+      type: "INF",
+      br: 2,
+      points: 150,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "7/9",
+      soak: 0,
+      melee: 3,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 3, aa: 2, loadouts: ["Point Blank", "Suppression(+1)"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Battle Hardened (2)", "Heroic Save(4+)"]
+    },
+
+    COV_ELITE_VENATORES: {
+      id: "COV_ELITE_VENATORES",
+      faction: "Covenant",
+      name: "Elite Venatores — Covenant Tank-Hunters",
+      type: "INF",
+      br: 2,
+      points: 160,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "7/9",
+      soak: 0,
+      melee: 3,
+      damageTrack: "5",
+
+      weapons: [
+        { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 3, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Elusive (ARM-1)", "Tank Hunter", "Heroic Save(5+)", "Big Game Hunters", "Combat Specialists"],
+
+      upgrades: [
+        {
+          id: "VENATORES_FUEL_ROD_TEAM",
+          mode: "flat",
+          label: "Weapon Upgrade (required): 2 Elements become Fuel Rod Cannons team",
+          cost: 0,
+          reqGroup: "VENATORES_WEAPON_TEAM",
+          reqOneOf: true,
+          reqLabel: "Weapon Team (required)"
+        },
+        { id: "VENATORES_OFFICER", mode: "flat", label: "Officer Upgrade: Small Arms Element becomes Huntsmaster (see card)", cost: 20 }
+      ],
+
+      upgradeWeapons: {
+        VENATORES_FUEL_ROD_TEAM: [
+          { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
+        ]
+      }
+    },
+
+    COV_ELITE_SPEC_OPS: {
+      id: "COV_ELITE_SPEC_OPS",
+      faction: "Covenant",
+      name: "Elite Spec Ops — Infiltration Unit",
+      type: "INF",
+      br: 3,
+      points: 210,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "7/9",
+      soak: 0,
+      melee: 4,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 5, at: 2, aa: 3, loadouts: ["Point Blank", "Suppression(+1)"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 4, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Battle Hardened (2)", "Cloaking", "Heroic Save(4+)", "Scrambled Motion Trackers", "Combat Specialists"],
+
+      upgrades: [
+        { id: "SPEC_OPS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Spec Ops Commandatus (see card)", cost: 30 }
+      ]
+    },
+
+    COV_ELITE_RANGERS: {
+      id: "COV_ELITE_RANGERS",
+      faction: "Covenant",
+      name: "Elite Rangers — Specialized Reconnaissance Unit",
+      type: ["INF","FLY"],
+      countsAs: ["INF"],
+      br: 3,
+      points: 220,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "7/9",
+      soak: 0,
+      melee: 3,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 3, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Plasma Charges", range: '6"/-"', arcs: "ALL", ap: 2, at: 6, aa: 0, loadouts: ["Devastating (ARM)", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Battle Hardened (2)", "Fearless", "Heroic Save(4+)", "Grav Packs", "Combat Specialists"],
+
+      upgrades: [
+        { id: "RANGERS_PLASMA_REPEATERS_X1", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Plasma Repeaters (+10)", cost: 10 },
+        { id: "RANGERS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Elite Ranger Officer (see card)", cost: 30 }
+      ],
+
+      upgradeWeapons: {
+        RANGERS_PLASMA_REPEATERS_X1: [
+          { name: "Plasma Repeaters (upg)", range: '15/20"', arcs: "ALL", ap: 6, at: 2, aa: 4, loadouts: ["Point Blank", "Suppression(+1)"] }
+        ]
+      }
+    },
+
+    COV_ELITE_ULTRA_UNIT: {
+      id: "COV_ELITE_ULTRA_UNIT",
+      faction: "Covenant",
+      name: "Elite Ultra Unit — Evocati",
+      type: "INF",
+      br: 3,
+      points: 210,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "7/9",
+      soak: 0,
+      melee: 4,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 5, at: 4, aa: 2, loadouts: ["Point Blank", "Suppression(+2)"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 4, at: 4, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Battle Hardened (2)", "Fearless", "Heroic Save(4+)", "Chosen of the Prophets", "Combat Specialists"],
+
+      upgrades: [
+        { id: "ELITE_ULTRA_ORBITAL_INSERTION", mode: "flat", label: "Death from Above: Gain Orbital Insertion loadout", cost: 30 },
+        { id: "ELITE_ULTRA_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Elite Ultra Officer (see card)", cost: 30 }
+      ]
+    },
+
+    // =========================
+    // ARMOURED
+    // =========================
+    COV_SCOUT_GHOST: {
+      id: "COV_SCOUT_GHOST",
+      faction: "Covenant",
+      name: "Scout Ghost — Type 32 Rapid Attack Vehicle",
+      type: "ARM",
+      br: 1,
+      points: 60,
+      elementsRule: { mode: "each", min: 1, max: 3 },
+
+      move: '12/18"',
+      react: "7/9",
+      soak: 3,
+      impact: 1,
+      damageTrack: "3-3",
+
+      weapons: [
+        { name: "Plasma Cannon", range: '15/20"', arcs: "FRONT", ap: 5, at: 3, aa: 2, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Aerial Insertion", "Diminutive"]
+    },
+
+    COV_STORM_GHOST: {
+      id: "COV_STORM_GHOST",
+      faction: "Covenant",
+      name: "Storm Ghost — Type 32 Rapid Attack Vehicle",
+      type: "ARM",
+      br: 2,
+      points: 90,
+      elementsRule: { mode: "each", min: 1, max: 3 },
+
+      move: '12/18"',
+      react: "6/8",
+      soak: 3,
+      impact: 2,
+      damageTrack: "4-4",
+
+      weapons: [
+        { name: "Plasma Cannon", range: '15/20"', arcs: "FRONT", ap: 6, at: 4, aa: 2, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Aerial Insertion", "Diminutive", "Heroic Save(5+)", "High Value Target (1)"]
+    },
+
+    COV_REVENANT: {
+      id: "COV_REVENANT",
+      faction: "Covenant",
+      name: "Revenant — Type 48 Light Assault Gun Carriage",
+      type: "ARM",
+      br: 2,
+      points: 110,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '10/15"',
+      react: "8/9",
+      soak: 3,
+      impact: 3,
+      damageTrack: "5-5",
+
+      weapons: [
+        { name: "Class-2 Plasma Mortar", range: '10/25"', arcs: "FRONT", ap: 7, at: 5, aa: 2, loadouts: ["Indirect Fire"] }
+      ],
+      tags: ["Aerial Insertion", "Boosted Gravity Propulsion Drive"]
+    },
+
+    COV_HUNTERS: {
+      id: "COV_HUNTERS",
+      faction: "Covenant",
+      name: "Hunters — Mgalekgolo Battle Congregation",
+      type: "ARM",
+      br: 2,
+      points: 125,
+      elementsRule: { mode: "each", min: 2, max: 2 },
+
+      move: '6/12"',
+      react: "10/11",
+      soak: 0,
+      melee: 6,
+      damageTrack: "6-6",
+
+      weapons: [
+        { name: "Assault Cannon", range: '20"/-"', arcs: "ALL", ap: 6, at: 6, aa: 2, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Battle Hardened (3)", "Aerial Insertion", "Hijack Resistant", "Hunter Shield", "Spirit Bond", "Armoured Infantry"]
+    },
+
+    COV_WRAITH: {
+      id: "COV_WRAITH",
+      faction: "Covenant",
+      name: "Wraith — Type 26 Assault Gun Carriage",
+      type: "ARM",
+      br: 5,
+      points: 270,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "11/12",
+      soak: 4,
+      impact: 2,
+      damageTrack: "5-5-5",
+
+      weapons: [
+        { name: "Plasma Mortar", range: '10/30"', arcs: "FRONT", ap: 12, at: 8, aa: 0, loadouts: ["Devastating (INF)", "Indirect Fire"] },
+        { name: "Medium Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Aerial Insertion", "Heavy Ordnance"]
+    },
+
+    COV_AA_WRAITH: {
+      id: "COV_AA_WRAITH",
+      faction: "Covenant",
+      name: "Anti-Air Wraith — Type 52 Anti-Aircraft Artillery",
+      type: "ARM",
+      br: 5,
+      points: 270,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "11/12",
+      soak: 4,
+      impact: 2,
+      damageTrack: "5-5-5",
+
+      weapons: [
+        { name: "Fuel Rod Battery", range: '15/30"', arcs: "FRONT", ap: 2, at: 12, aa: 14, loadouts: ["Devastating (ALL)"] },
+        { name: "Medium Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Aerial Insertion", "Scour the Skies"]
+    },
+
+    COV_LOCUST: {
+      id: "COV_LOCUST",
+      faction: "Covenant",
+      name: "Locust — Type 30 Excavation / Anti-Fortification Platform",
+      type: "ARM",
+      br: 5,
+      points: 270,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '8/12"',
+      react: "10/11",
+      soak: 3,
+      impact: 3,
+      damageTrack: "5-4-4",
+
+      weapons: [
+        { name: "Focus Cannon", range: '10/30"', arcs: "ALL", ap: 6, at: 14, aa: 6, loadouts: ["Blast"] }
+      ],
+      tags: ["Stride", "Heroic Save(5+)", "Concentrated Beam"]
+    },
+
+    COV_SHADOW: {
+      id: "COV_SHADOW",
+      faction: "Covenant",
+      name: "Shadow — Type 26 Light Transport",
+      type: "ARM",
+      br: 3,
+      points: 150,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "10/11",
+      soak: 4,
+      impact: 2,
+      damageTrack: "5-5-5",
+
+      weapons: [
+        { name: "Plasma Cannon", range: '10/20"', arcs: "ALL", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Transport (1)"]
+    },
+
+    // =========================
+    // FLYERS
+    // =========================
+    COV_BANSHEE: {
+      id: "COV_BANSHEE",
+      faction: "Covenant",
+      name: "Banshee — Type 26B Ground Support Aircraft",
+      type: "FLY",
+      br: 2,
+      points: 100,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '18/24"',
+      react: "6/9",
+      soak: 3,
+      damageTrack: "5-4",
+
+      weapons: [
+        { name: "Heavy Fuel Rod Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 7, aa: 4, loadouts: ["Devastating (ARM)"] }
+      ],
+      tags: ["Evasive (2)", "Elusive (ALL-1)", "Momentum (10”)"]
+    },
+
+    COV_VAMPIRE: {
+      id: "COV_VAMPIRE",
+      faction: "Covenant",
+      name: "Vampire — Type 29 Close Support Fighter",
+      type: "FLY",
+      br: 5,
+      points: 270,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '8/12"',
+      react: "10/12",
+      soak: 4,
+      damageTrack: "6-6-5",
+
+      weapons: [
+        { name: "Heavy Needle Cannon", range: '10/20"', arcs: "FRONT", ap: 4, at: 10, aa: 14, loadouts: ["Devastating (FLY)"] },
+        { name: "Automated Plasma Cannons", range: '15"/-"', arcs: "L & R", ap: 5, at: 6, aa: 4, loadouts: ["Point Blank", "Suppression(+2)"] }
+      ],
+      tags: ["Scour the Skies", "Stasis Cannon"]
+    },
+
+    COV_PHANTOM: {
+      id: "COV_PHANTOM",
+      faction: "Covenant",
+      name: "Phantom — Type 52 Troop Carrier",
+      type: "ASF",
+      br: 4,
+      points: 200,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      damageTrack: "6-5-5",
+
+      weapons: [
+        { name: "Heavy Plasma Cannon", range: '15"/-"', arcs: "FRONT", ap: 6, at: 12, aa: 8, loadouts: ["Point Blank"] },
+        { name: "Plasma Cannons", range: '15"/-"', arcs: "L & R", ap: 8, at: 6, aa: 4, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Dust Off", "High Value Asset (1-1-2)"]
+    },
+
+    COV_SERAPH: {
+      id: "COV_SERAPH",
+      faction: "Covenant",
+      name: "Seraph — Type 31 Exoatmospheric Strike Fighter",
+      type: "ASF",
+      br: 3,
+      points: 180,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      damageTrack: "5-4-3",
+
+      weapons: [
+        { name: "Heavy Plasma Cannons", range: '20"/-"', arcs: "FRONT", ap: 15, at: 12, aa: 15, loadouts: ["Devastating (ALL)", "Point Blank"] }
+      ],
+      tags: ["High Value Asset (1-1-1)"]
+    },
+
+    // =========================
+    // CHARACTERS
+    // =========================
+    COV_ELITE_OFFICER: {
+      id: "COV_ELITE_OFFICER",
+      faction: "Covenant",
+      name: "Elite Officer — Warhost Obedientiary",
+      type: ["CHA","INF"],
+      br: 2,
+      points: 100,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/9"',
+      react: "6/8",
+      soak: 0,
+      melee: 5,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 7, at: 7, aa: 6, loadouts: ["Point Blank"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Attachment (ALL)", "Battle Hardened (3)", "Commanding Presence (12”)", "Heroic Save(3+)"]
+    },
+
+    COV_ZEALOT: {
+      id: "COV_ZEALOT",
+      faction: "Covenant",
+      name: "Elite Zealot — Warhost Leader",
+      type: ["CHA","INF"],
+      br: 3,
+      points: 160,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/9"',
+      react: "7/9",
+      soak: 0,
+      melee: 8,
+      damageTrack: "5-5",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 7, at: 7, aa: 6, loadouts: ["Point Blank"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Attachment (INF)", "Battle Hardened (6)", "Commanding Presence (6”)", "Fearless", "Heroic Save(3+)"]
+    },
+
+	COV_GOBLIN: {
+	  id: "COV_GOBLIN",
+	  faction: "Covenant",
+	  name: "Grunt Goblin — Pnap-Pattern Battlesuit",
+	  type: ["CHA","ARM"],
+	  br: 6,
+	  points: 320,
+	  elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+	  move: '6/9"',
+	  react: "8/9",
+	  soak: 0,
+	  melee: 8,
+	  damageTrack: "4-4-4",
+
+	  upgrades: [
+		{
+		  id: "GOBLIN_LOADOUT",
+		  mode: "choice",
+		  label: "Loadout Weapons (required)",
+		  cost: 0,
+		  reqGroup: "GOBLIN_LOADOUT",
+		  reqOneOf: true,
+		  reqLabel: "Loadout Weapons (required)",
+		  choices: [
+			{ label: "Goblin Needle Cannon (Loadout)", cost: 0 },
+			{ label: "Goblin Focus Cannon (Loadout)", cost: 0 }
+		  ]
+		}
+	  ],
+
+	  weapons: [],
+
+	  upgradeWeapons: {
+		GOBLIN_LOADOUT: {
+		  0: [
+			{
+			  name: "Goblin Needle Cannon (Loadout)",
+			  range: '10/20"',
+			  arcs: "ALL",
+			  ap: 11,
+			  at: 5,
+			  aa: 9,
+			  loadouts: ["Point Blank", "Lethal (1)"]
+			}
+		  ],
+		  1: [
+			{
+			  name: "Goblin Focus Cannon (Loadout)",
+			  range: '10/20"',
+			  arcs: "ALL",
+			  ap: 6,
+			  at: 14,
+			  aa: 6,
+			  loadouts: ["Devastating (ARM)", "Blast"]
+			}
+		  ]
+		}
+	  },
+
+	  tags: [
+		"Stride",
+		"Heroic Save(3+)",
+		"Battle Hardened (6)",
+		"High Value Target (1)",
+		"Running Riot",
+		"Engage Thrusters!",
+		"Shardstorm Launcher",
+		"SMASH YOU!"
+	  ]
+	}
+	
+  },
+
+  Banished: {
+    // =========================
+    // INFANTRY
+    // =========================
+    BAN_GRUNTS: {
+      id: "BAN_GRUNTS",
+      faction: "Banished",
+      name: "Grunts — Conscripts Unit",
+      type: "INF",
+      br: 1,
+      points: 50,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '6/9"',
+      react: "9/11",
+      soak: 0,
+      melee: 1,
+      damageTrack: "3",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 2, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Plasma Grenades", range: '10"/-"', arcs: "ALL", ap: 2, at: 2, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: [],
+
+      upgrades: [
+        { id: "GRUNTS_FUEL_ROD", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Fuel Rod Cannons (+15)", cost: 15 },
+        { id: "GRUNTS_PLASMA_LAUNCHERS", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Plasma Launchers (+15)", cost: 15 },
+		{ id: "GRUNTS_ELITE_MERC", mode: "count", label: "Warrior Upgrade: Up to 2 Elements become Elite Mercenaries (see card)", max: 2, costEach: 20 },
+		{ id: "GRUNTS_BRUTE_MINOR", mode: "count", label: "Warrior Upgrade: Up to 2 Elements become Brute Minors (see card)", max: 2, costEach: 20 }
+      ],
+
+      upgradeWeapons: {
+        GRUNTS_FUEL_ROD: [
+          { name: "Fuel Rod Cannons (upg)", range: '15/20"', arcs: "ALL", ap: 2, at: 6, aa: 1, loadouts: ["Point Blank"] }
+        ],
+        GRUNTS_PLASMA_LAUNCHERS: [
+          { name: "Plasma Launchers (upg)", range: '12/24"', arcs: "ALL", ap: 1, at: 4, aa: 6, loadouts: ["Lock On", "Devastating (FLY)"] }
+        ]
+      }
+    },
+
+    BAN_JACKAL_SKIRMISHERS: {
+      id: "BAN_JACKAL_SKIRMISHERS",
+      faction: "Banished",
+      name: "Jackal Skirmishers — Flanking Unit",
+      type: "INF",
+      br: 2,
+      points: 130,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '8/12"',
+      react: "5/7",
+      soak: 0,
+      melee: 1,
+      damageTrack: "4",
+
+      weapons: [
+        { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Evasive (1)", "Stride", "Heroic Save(6+)"],
+
+      upgrades: [
+        { id: "SKIRMISHERS_SHOCK_RIFLE", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Shock Rifle (+15)", cost: 15 },
+        { id: "SKIRMISHERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Skirmisher Captain (see card) (+15)", cost: 15 }
+      ],
+
+      upgradeWeapons: {
+        SKIRMISHERS_SHOCK_RIFLE: [
+          { name: "Shock Rifle (upg)", range: '12/24"', arcs: "ALL", ap: 4, at: 4, aa: 2, loadouts: ["Immobilize (3)"] }
+        ]
+      }
+    },
+
+    BAN_BRUTE_WARRIORS: {
+      id: "BAN_BRUTE_WARRIORS",
+      faction: "Banished",
+      name: "Brute Warriors — Jiralhanae Pack",
+      type: "INF",
+      br: 2,
+      points: 160,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "8/10",
+      soak: 0,
+      melee: 4,
+      damageTrack: "4-4",
+
+      weapons: [
+        { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 4, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Battle Hardened (2)", "Primal Rage"],
+
+      upgrades: [
+        { id: "BRUTES_CHOSEN_WARRIOR", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Chosen Warrior (see card) (+15)", cost: 15 },
+        { id: "BRUTES_RAVAGER", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Ravager (+15)", cost: 15 },
+        { id: "BRUTES_BRUTE_SHOT", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Brute Shot (+15)", cost: 15 }
+      ],
+
+      upgradeWeapons: {
+        BRUTES_RAVAGER: [
+          { name: "Ravager (upg)", range: '15/20"', arcs: "ALL", ap: 6, at: 2, aa: 4, loadouts: ["Indirect Fire", "Underslung Blade"] }
+        ],
+        BRUTES_BRUTE_SHOT: [
+          { name: "Brute Shot (upg)", range: '20"/-"', arcs: "ALL", ap: 6, at: 4, aa: 2, loadouts: ["Blast", "Underslung Blade"] }
+        ]
+      }
+    },
+
+    BAN_BRUTE_JUMPERS: {
+      id: "BAN_BRUTE_JUMPERS",
+      faction: "Banished",
+      name: "Brute Jumpers — Anti-Armour Jiralhanae",
+      type: "INF",
+      br: 3,
+      points: 210,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/9"',
+      react: "8/9",
+      soak: 0,
+      melee: 4,
+      damageTrack: "5-5",
+
+      weapons: [
+        { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 4, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Elusive (ARM-1)", "Battle Hardened (3)", "Fearless", "Sundering (ARM)", "Jump Packs", "Combat Specialists"],
+
+      upgrades: [
+        { id: "JUMPERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Upgrade 1 Element to Jumper Captain (see card) (+30)", cost: 30 }
+      ]
+    },
+
+    BAN_BRUTE_BERSERKERS: {
+      id: "BAN_BRUTE_BERSERKERS",
+      faction: "Banished",
+      name: "Brute Berserkers — Specialist Assault Infantry",
+      type: "INF",
+      br: 3,
+      points: 210,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '8/12"',
+      react: "7/8",
+      soak: 0,
+      melee: 5,
+      damageTrack: "5-5",
+
+      weapons: [],
+
+      tags: ["Fearless", "Sundering (INF)", "Drop Shock", "Berserk", "Combat Specialists"],
+
+      upgrades: [
+        { id: "BERSERKERS_ORBITAL_INSERTION", mode: "flat", label: "Death from Above: Gain Orbital Insertion loadout (+40)", cost: 40 },
+        { id: "BERSERKERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Upgrade 1 Element to Berserker Captain (see card) (+30)", cost: 30 }
+      ]
+    },
+
+    // =========================
+    // ARMOURED
+    // =========================
+    BAN_TERROR_CHOPPER: {
+      id: "BAN_TERROR_CHOPPER",
+      faction: "Banished",
+      name: "Terror Chopper — Frontline Assault Vehicle",
+      type: "ARM",
+      br: 2,
+      points: 100,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '12/15"',
+      react: "7/9",
+      soak: 3,
+      impact: 4,
+      damageTrack: "5-4",
+
+      weapons: [
+        { name: "Auto Cannons", range: '15"/-"', arcs: "FRONT", ap: 5, at: 4, aa: 3, loadouts: ["Point Blank", "Suppression(+1)"] }
+      ],
+
+      tags: ["Aerial Insertion", "Devastating Impact (2)", "Stride", "Relentless Ram", "Cossack Raiders"]
+    },
+
+    BAN_IRONCLAD_HUNTERS: {
+      id: "BAN_IRONCLAD_HUNTERS",
+      faction: "Banished",
+      name: "Ironclad Hunters — Mgalekgolo Guardians",
+      type: "ARM",
+      br: 2,
+      points: 125,
+      elementsRule: { mode: "each", min: 2, max: 2 },
+
+      move: '6/9"',
+      react: "10/11",
+      soak: 1,
+      melee: 4,
+      damageTrack: "6-6",
+
+      weapons: [
+        { name: "Beam Cannon", range: '20"/-"', arcs: "ALL", ap: 7, at: 7, aa: 4, loadouts: ["Point Blank", "Suppression(+1)"] }
+      ],
+
+      tags: ["Battle Hardened (2)", "Aerial Insertion", "Hijack Resistant", "Spirit Bond", "Hunter Shield", "Armoured Infantry"]
+    },
+
+    BAN_REAVER: {
+      id: "BAN_REAVER",
+      faction: "Banished",
+      name: "Reaver",
+      type: "ARM",
+      br: 3,
+      points: 180,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/9"',
+      react: "9/10",
+      soak: 3,
+      impact: 3,
+      damageTrack: "8-6",
+
+      weapons: [
+        { name: "Missile Pods", range: '10/30"', arcs: "ALL", ap: 2, at: 8, aa: 12, loadouts: ["Lock On", "Devastating (FLY)", "Armour-Piercing (2)"] },
+        { name: "Auto Cannon", range: '15"/-"', arcs: "FRONT", ap: 6, at: 4, aa: 4, loadouts: ["Point Blank", "Suppression(+1)"] }
+      ],
+
+      tags: ["Aerial Insertion", "Stride", "Scour the Skies", "Rocket Burn"]
+    },
+
+    BAN_TERROR_WRAITH: {
+      id: "BAN_TERROR_WRAITH",
+      faction: "Banished",
+      name: "Terror Wraith — Close Assault Tank",
+      type: "ARM",
+      br: 6,
+      points: 310,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '8/12"',
+      react: "11/12",
+      soak: 3,
+      impact: 8,
+      damageTrack: "7-6-6",
+
+      weapons: [
+        { name: "Volatile Plasma Mortar", range: '12/24"', arcs: "FRONT", ap: 12, at: 8, aa: 0, loadouts: ["Inferno (3)", "Armour-Piercing (2)"] },
+        { name: "Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank", "Suppression(+1)"] }
+      ],
+
+      tags: ["Devastating Impact (4)", "Relentless Ram", "Reinforced Armor Plating"]
+    },
+
+    BAN_WAR_SKIFF: {
+      id: "BAN_WAR_SKIFF",
+      faction: "Banished",
+      name: "War-Skiff — Qavardu Workshop Transport",
+      type: "ARM",
+      br: 3,
+      points: 150,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '10/15"',
+      react: "8/10",
+      soak: 3,
+      impact: 4,
+      damageTrack: "6-5-4",
+
+      weapons: [
+        { name: "Missile Launchers", range: '10/20"', arcs: "F", ap: 2, at: 6, aa: 8, loadouts: ["Lock On", "Devastating (FLY)"] },
+        { name: "Light Plasma Cannon", range: '10/20"', arcs: "ALL", ap: 6, at: 4, aa: 3, loadouts: ["Limited Range", "Point Blank"] }
+      ],
+
+      tags: ["Transport (1)"]
+    },
+
+    // =========================
+    // FLYERS
+    // =========================
+    BAN_TERROR_BANSHEE: {
+      id: "BAN_TERROR_BANSHEE",
+      faction: "Banished",
+      name: "Terror Banshee — Kaelum Workshop Ground Support Aircraft",
+      type: "FLY",
+      br: 2,
+      points: 120,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '15/20"',
+      react: "7/9",
+      soak: 4,
+      damageTrack: "6-5",
+
+      weapons: [
+        { name: "Volatile Fuel Rod Cannon", range: '10/20"', arcs: "FRONT", ap: 4, at: 8, aa: 6, loadouts: ["Devastating (ARM/FLY)"] }
+      ],
+
+      tags: ["Evasive (1)", "Elusive (ALL-1)", "Momentum (10”)"]
+    },
+
+    BAN_PHANTOM: {
+      id: "BAN_PHANTOM",
+      faction: "Banished",
+      name: "Phantom — Warrior Transport",
+      type: "ASF",
+      br: 4,
+      points: 200,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      damageTrack: "6-5-5",
+
+      weapons: [
+        { name: "Heavy Plasma Cannons", range: '15"/-"', arcs: "F", ap: 6, at: 12, aa: 8, loadouts: ["Point Blank"] },
+        { name: "Plasma Cannons", range: '15"/-"', arcs: "L & R", ap: 8, at: 6, aa: 4, loadouts: ["Point Blank"] }
+      ],
+      tags: ["Dust Off", "High Value Asset (1-1-2)"]
+    },
+
+    BAN_GRIEVER: {
+      id: "BAN_GRIEVER",
+      faction: "Banished",
+      name: "Griever — Fighter-Bomber",
+      type: "ASF",
+      br: 3,
+      points: 180,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      damageTrack: "5-5-4",
+
+      weapons: [
+        { name: "Mortar", range: '15"/-"', arcs: "FRONT", ap: 12, at: 1, aa: 0, loadouts: ["Devastating (INF)"] },
+        { name: "Ultra Light Plasma Lance", range: '15"/-"', arcs: "FRONT", ap: 2, at: 13, aa: 6, loadouts: ["Devastating (ARM)"] }
+      ],
+      tags: ["High Value Asset (1-1-1)"]
+    },
+
+    // =========================
+    // CHARACTERS
+    // =========================
+	BAN_BRUTE_CAPTAIN: {
+	  id: "BAN_BRUTE_CAPTAIN",
+	  faction: "Banished",
+	  name: "Brute Captain — Pack Alpha",
+	  type: ["CHA","INF"],
+	  br: 2,
+	  points: 130,
+	  elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+	  move: '6/9"',
+	  react: "7/9",
+	  soak: 0,
+	  melee: 6,
+	  damageTrack: "5-5",
+
+	  weapons: [
+		{
+		  name: "Spike Grenade",
+		  range: '10"/-"',
+		  arcs: "ALL",
+		  ap: 5,
+		  at: 3,
+		  aa: 0,
+		  loadouts: ["Blast", "Cooldown (weapon)"]
+		}
+	  ],
+
+	  tags: [
+		"Attachment (INF)",
+		"Battle Hardened (4)",
+		"Intimidating Presence (12”)",
+		"Heroic Save(4+)",
+		"Weapon Drop",
+		"Primal Rage"
+	  ],
+
+	  upgrades: [
+		{
+		  id: "CAPTAIN_LOADOUT",
+		  mode: "choice",
+		  label: "Loadout Weapons (required)",
+		  cost: 0,
+		  reqGroup: "CAPTAIN_LOADOUT",
+		  reqOneOf: true,
+		  reqLabel: "Loadout Weapons (required)",
+		  choices: [
+			{ label: "Ravager (loadout)", cost: 0 },
+			{ label: "Brute Shot (loadout)", cost: 0 }
+		  ]
+		},
+		{
+		  id: "CAPTAIN_SKEWER",
+		  mode: "flat",
+		  label: "Weapon Upgrade: Add Skewer (upg)",
+		  cost: 0
+		}
+	  ],
+
+	  upgradeWeapons: {
+		CAPTAIN_LOADOUT: {
+		  0: [
+			{
+			  name: "Ravager (loadout)",
+			  range: '15/20"',
+			  arcs: "ALL",
+			  ap: 7,
+			  at: 3,
+			  aa: 5,
+			  loadouts: ["Indirect Fire", "Underslung Blade"]
+			}
+		  ],
+		  1: [
+			{
+			  name: "Brute Shot (loadout)",
+			  range: '20"/-"',
+			  arcs: "ALL",
+			  ap: 7,
+			  at: 5,
+			  aa: 3,
+			  loadouts: ["Blast", "Underslung Blade"]
+			}
+		  ]
+		},
+		CAPTAIN_SKEWER: [
+		  {
+			name: "Skewer (upg)",
+			range: '12/24"',
+			arcs: "ALL",
+			ap: 4,
+			at: 12,
+			aa: 4,
+			loadouts: ["Cooldown (weapon)", "Armour-Piercing (2)"]
+		  }
+		]
+	  }
+	},
+
+    BAN_CHIEFTAIN: {
+      id: "BAN_CHIEFTAIN",
+      faction: "Banished",
+      name: "Brute Chieftain — Pack Leader",
+      type: ["CHA","INF"],
+      br: 3,
+      points: 180,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "7/9",
+      soak: 2,
+      melee: 9,
+      damageTrack: "6-6",
+
+      weapons: [
+        { name: "Spike Grenade", range: '10"/-"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Blast", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Attachment (INF)", "Battle Hardened (5)", "Intimidating Presence 2 (12”)", "Fearless", "Sundering (ARM)", "Heroic Save(4+)", "Gravity Hammer Slam", "Primal Rage"]
+    },
+
+    BAN_BLOODSTAR: {
+      id: "BAN_BLOODSTAR",
+      faction: "Banished",
+      name: "Bloodstar — Stalker/Executioner Unit",
+      type: ["CHA","INF"],
+      br: 3,
+      points: 120,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '8/12"',
+      react: "6/8",
+      soak: 0,
+      melee: 6,
+      damageTrack: "4-4",
+
+      weapons: [
+        {
+          name: "Small Arms",
+          range: '10/20"',
+          arcs: "ALL",
+          ap: 9,
+          at: 7,
+          aa: 7,
+          loadouts: ["Point Blank", "Lethal (1)"]
+        },
+        {
+          name: "Plasma Grenades",
+          range: '10"/-"',
+          arcs: "ALL",
+          ap: 5,
+          at: 3,
+          aa: 0,
+          loadouts: ["Blast", "Cooldown (weapon)"]
+        }
+      ],
+
+      tags: [
+        "Battle Hardened (6)",
+        "Deadly (1)",
+        "Fearless",
+        "Cloaking",
+        "Heroic Save(3+)",
+        "High Value Target (1)",
+        "Little Demons"
+      ],
+
+      upgrades: []
+    },
+
+    BAN_HUNTER_CAPTAIN: {
+      id: "BAN_HUNTER_CAPTAIN",
+      faction: "Banished",
+      name: "Hunter Captain — Mgalekgolo Officer",
+      type: ["CHA","ARM"],
+      br: 6,
+      points: 350,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '8/12"',
+      react: "8/10",
+      soak: 2,
+      melee: 9,
+      damageTrack: "7-6-6",
+
+      weapons: [
+        {
+          name: "Siphon Cannon",
+          range: '20"/-"',
+          arcs: "ALL",
+          ap: 16,
+          at: 16,
+          aa: 12,
+          loadouts: ["Point Blank", "Armour-Piercing (2)"]
+        }
+      ],
+
+      tags: [
+        "Battle Hardened (3)",
+        "Intimidating Presence 2 (12”)",
+        "Commanding Presence (HUNTER) (12”)",
+        "Fearless",
+        "Sundering (ALL)",
+        "Running Riot",
+        "Hunter Shield",
+        "Siphon Regeneration"
+      ],
+
+      upgrades: []
     }
-  ],
-
-  // Treat “Special Rules / Unit Loadouts” like your other entries do: tags.
-  tags: [
-    "Stride",
-    "Heroic Save(5+)",
-    "Fearless",
-    "Commanding Presence (9”)",
-    "Hijack Resistant",
-    "High Value Target (1)",
-    "Concentrated Firepower"
-  ],
-
-  upgrades: [],
-
-},  
-
-  // =========================
-  // UPGRADE-ONLY “CARDS” (optional to keep here for now)
-  // =========================	
-/*
-  FOR_CRAWLER_ALPHA: {
-    id: "FOR_CRAWLER_ALPHA",
-    faction: "Forerunners",
-    name: "Crawler Alpha — Automaton Pack Leader (UPG)",
-    type: "INF",
-    br: 0,
-    points: 10,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '8/12"',
-    react: "7/9",
-    soak: 0,
-    melee: 3,
-    damageTrack: "3",
-
-    weapons: [
-      { name: "Suppressor", range: '10/20"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Suppression(+1)"] }
-    ],
-
-    tags: ["Heroic Save(5+)", "Stride", "Battle Hardened (1)"],
-    upgrades: []
-  },
-  
-  FOR_AGGRESSOR_ELIMINATOR: {
-    id: "FOR_AGGRESSOR_ELIMINATOR",
-    faction: "Forerunners",
-    name: "Aggressor Eliminator — Advanced Sentinel (UPG)",
-    type: "INF",
-    br: 0,
-    points: 20,
-    elementsRule: { mode: "fixed", min: 1, max: 1 },
-
-    move: '10/15"',
-    react: "7/7",
-    soak: 0,
-    melee: 1,
-    damageTrack: "4",
-
-    weapons: [
-      { name: "Eliminator Beam", range: '10/20"', arcs: "ALL", ap: 5, at: 3, aa: 3, loadouts: ["Suppression(+2)", "Devastating (INF)"] }
-    ],
-
-    tags: ["Heroic Save(4+)", "Flying Infantry"],
-    upgrades: []
   },
 
-*/  
-  
-}
+  Forerunners: {
+    // =========================
+    // INFANTRY — PROMETHEAN
+    // =========================
+    FOR_CRAWLER_PACK: {
+      id: "FOR_CRAWLER_PACK",
+      faction: "Forerunners",
+      name: "Crawler Pack — Aggressive Automatons",
+      type: "INF",
+      br: 1,
+      points: 80,
+      elementsRule: { mode: "fixed", min: 5, max: 5 },
 
+      move: '8/12"',
+      react: "8/10",
+      soak: 0,
+      melee: 2,
+      damageTrack: "3",
 
+      weapons: [
+        { name: "Small Arms", range: '15"/-"', arcs: "ALL", ap: 2, at: 2, aa: 1, loadouts: [] }
+      ],
 
-  
+      tags: ["Stride"],
+
+      upgrades: [
+        { id: "CRAWLER_ALPHA", mode: "count", label: "Crawler Alpha: Up to 2 Elements become Crawler Alphas (see card)", max: 2, costEach: 10 }
+      ]
+    },
+
+    FOR_CRAWLER_SNIPER: {
+      id: "FOR_CRAWLER_SNIPER",
+      faction: "Forerunners",
+      name: "Crawler Snipers — Automaton Executors",
+      type: "INF",
+      br: 2,
+      points: 120,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '8/12"',
+      react: "7/9",
+      soak: 0,
+      melee: 2,
+      damageTrack: "3",
+
+      weapons: [
+        { name: "Small Arms", range: '15"/-"', arcs: "ALL", ap: 2, at: 2, aa: 1, loadouts: [] },
+        { name: "Binary Rifles", range: '15/30"', arcs: "ALL", ap: 5, at: 3, aa: 0, loadouts: ["Cooldown (weapon)", "Lock On", "Lethal (1)", "Pinpoint (ALL)"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Stride"],
+
+      upgrades: [
+        {
+          id: "CRAWLER_BINARY_TEAM",
+          mode: "flat",
+          label: "Weapon Upgrade (required): 2 Elements become Binary Rifle Team (no cost)",
+          cost: 0,
+          reqGroup: "CRAWLER_WEAPON_TEAM",
+          reqOneOf: true,
+          reqLabel: "Weapon Team (required)"
+        }
+      ]
+    },
+
+    FOR_WATCHERS: {
+      id: "FOR_WATCHERS",
+      faction: "Forerunners",
+      name: "Watchers — Combat Support",
+      type: ["INF","FLY"],
+      countsAs: ["INF"],
+      br: 2,
+      points: 140,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '10/15"',
+      react: "8/10",
+      soak: 0,
+      melee: 1,
+      damageTrack: "4",
+
+      weapons: [
+        { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 2, at: 1, aa: 1, loadouts: ["Limited Range", "Point Blank"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Evasive (1)", "Flying Infantry", "Support Protocols", "Combat Specialists"],
+      upgrades: []
+    },
+
+    FOR_SOLDIERS: {
+      id: "FOR_SOLDIERS",
+      faction: "Forerunners",
+      name: "Soldiers — Armiger Combat Constructs",
+      type: "INF",
+      br: 2,
+      points: 150,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '6/12"',
+      react: "7/9",
+      soak: 0,
+      melee: 1,
+      damageTrack: "5",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 3, at: 2, aa: 2, loadouts: ["Suppression(+1)"] },
+        { name: "Scattershot", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Light Rifle", range: '16/24"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Lock On"] },
+        { name: "Splinter Grenade", range: '10"/-"', arcs: "ALL", ap: 2, at: 3, aa: 0, loadouts: ["Immobilize (2)", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Heroic Save(5+)", "Fearless"],
+
+      upgrades: [
+        { id: "SOLDIERS_SCATTERSHOT", mode: "count", label: "Weapon Upgrade: Scattershot", max: 2, costEach: 10 },
+        { id: "SOLDIERS_LIGHT_RIFLE", mode: "count", label: "Weapon Upgrade: Light Rifle", max: 2, costEach: 10 }
+      ],
+
+      upgradeWeapons: {
+        SOLDIERS_SCATTERSHOT: [
+          { name: "Scattershot (upg)", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] }
+        ],
+        SOLDIERS_LIGHT_RIFLE: [
+          { name: "Light Rifle (upg)", range: '16/24"', arcs: "ALL", ap: 4, at: 3, aa: 3, loadouts: ["Lock On"] }
+        ]
+      }
+    },
+
+    FOR_SOLDIER_ENFORCERS: {
+      id: "FOR_SOLDIER_ENFORCERS",
+      faction: "Forerunners",
+      name: "Soldier Enforcers — Heavy Support Armigers",
+      type: "INF",
+      br: 3,
+      points: 210,
+      elementsRule: { mode: "fixed", min: 3, max: 3 },
+
+      move: '6/12"',
+      react: "8/9",
+      soak: 0,
+      melee: 2,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Scattershot", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 1, loadouts: ["Limited Range", "Point Blank"] },
+        { name: "Splinter Cannon", range: '10/20"', arcs: "ALL", ap: 3, at: 5, aa: 1, loadouts: ["Devastating (ARM)"] },
+        { name: "Hydra", range: '12/24"', arcs: "ALL", ap: 1, at: 3, aa: 5, loadouts: ["Devastating (FLY)", "Blast"] },
+        { name: "Splinter Grenade", range: '10"/-"', arcs: "ALL", ap: 3, at: 4, aa: 0, loadouts: ["Immobilize (2)", "Cooldown (weapon)"] }
+      ],
+
+      tags: ["Heroic Save(4+)", "Battle Hardened (1)", "Fearless", "Active Overwatch", "Combat Specialists"],
+
+      upgrades: [
+        { id: "ENFORCERS_TEAM_SPLINTER", mode: "flat", label: "Weapon Upgrade: 3 Elements become Splinter Cannon Team (no cost listed)", cost: 0 },
+        { id: "ENFORCERS_TEAM_HYDRA", mode: "flat", label: "Weapon Upgrade: 3 Elements become Hydra Team (no cost listed)", cost: 0 }
+      ]
+    },
+
+    // =========================
+    // INFANTRY — SENTINEL
+    // =========================
+    FOR_AGGRESSOR_SENTINELS: {
+      id: "FOR_AGGRESSOR_SENTINELS",
+      faction: "Forerunners",
+      name: "Aggressors — Security Sentinels",
+      type: ["INF","FLY"],
+      countsAs: ["INF"],
+      br: 1,
+      points: 110,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '10/15"',
+      react: "8/8",
+      soak: 0,
+      melee: 1,
+      damageTrack: "4",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 3, at: 1, aa: 2, loadouts: ["Suppression(+1)"] }
+      ],
+
+      tags: ["Heroic Save(6+)", "Flying Infantry"],
+
+      upgrades: [
+        { id: "AGGRESSOR_ELIMINATOR", mode: "flat", label: "Sentinel Eliminator: Up to 1 Element upgrades to Aggressor Eliminator (+20)", cost: 20 }
+      ]
+    },
+
+    FOR_REGULATOR_SENTINELS: {
+      id: "FOR_REGULATOR_SENTINELS",
+      faction: "Forerunners",
+      name: "Regulators — Manager Sentinels",
+      type: ["INF","FLY"],
+      countsAs: ["INF"],
+      br: 2,
+      points: 150,
+      elementsRule: { mode: "fixed", min: 4, max: 4 },
+
+      move: '10/15"',
+      react: "9/9",
+      soak: 0,
+      melee: 2,
+      damageTrack: "4",
+
+      weapons: [
+        { name: "Small Arms", range: '10/20"', arcs: "ALL", ap: 3, at: 1, aa: 2, loadouts: ["Suppression(+1)"] },
+        { name: "Regulator Shock", range: '16/24"', arcs: "ALL", ap: 2, at: 5, aa: 6, loadouts: ["Lock On", "Immobilize (2)"] }
+      ],
+
+      tags: ["Heroic Save(5+)", "Active Overwatch", "Flying Infantry"],
+
+      upgrades: [
+        {
+          id: "REGULATOR_SHOCK_TEAM",
+          mode: "flat",
+          label: "Weapon Upgrade (required): 2 Elements become Regulator Shock Team (no cost)",
+          cost: 0,
+          reqGroup: "REGULATOR_WEAPON_TEAM",
+          reqOneOf: true,
+          reqLabel: "Weapon Team (required)"
+        }
+      ]
+    },
+
+    // =========================
+    // ARMOURED — PROMETHEAN
+    // =========================
+	FOR_KNIGHT: {
+	  id: "FOR_KNIGHT",
+	  faction: "Forerunners",
+	  name: "Knight — Promethean Warrior",
+	  type: "ARM",
+	  br: 2,
+	  points: 110,
+	  elementsRule: { mode: "each", min: 1, max: 2 },
+
+	  move: '6/12"',
+	  react: "8/10",
+	  soak: 0,
+	  melee: 6,
+	  damageTrack: "6-4",
+
+	  weapons: [],
+
+	  tags: [
+		"Battle Hardened (3)",
+		"Aerial Insertion",
+		"Stride",
+		"Hijack Resistant",
+		"Armoured Infantry",
+		"Watcher Support"
+	  ],
+
+	  upgrades: [
+		{
+		  id: "KNIGHT_LOADOUT_SCATTERSHOT",
+		  mode: "flat",
+		  label: "Loadout: Scattershot (record on force list)",
+		  cost: 0,
+		  reqGroup: "KNIGHT_LOADOUT",
+		  reqOneOf: true,
+		  reqLabel: "Loadout Weapon (required)",
+		  mutex: true
+		},
+		{
+		  id: "KNIGHT_LOADOUT_LIGHT_RIFLE",
+		  mode: "flat",
+		  label: "Loadout: Light Rifle (record on force list)",
+		  cost: 0,
+		  reqGroup: "KNIGHT_LOADOUT",
+		  reqOneOf: true,
+		  reqLabel: "Loadout Weapon (required)",
+		  mutex: true
+		}
+	  ],
+
+	  upgradeWeapons: {
+		KNIGHT_LOADOUT_SCATTERSHOT: [
+		  {
+			name: "Scattershot (Loadout)",
+			range: '12/18"',
+			arcs: "ALL",
+			ap: 7,
+			at: 4,
+			aa: 2,
+			loadouts: ["Limited Range", "Point Blank"]
+		  }
+		],
+		KNIGHT_LOADOUT_LIGHT_RIFLE: [
+		  {
+			name: "Light Rifle (Loadout)",
+			range: '16/24"',
+			arcs: "ALL",
+			ap: 6,
+			at: 4,
+			aa: 4,
+			loadouts: ["Lock On"]
+		  }
+		]
+	  }
+	},
+
+    FOR_KNIGHT_LANCER: {
+      id: "FOR_KNIGHT_LANCER",
+      faction: "Forerunners",
+      name: "Knight Lancer — Scout Marksmen",
+      type: "ARM",
+      br: 2,
+      points: 130,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '6/12"',
+      react: "7/9",
+      soak: 0,
+      melee: 6,
+      damageTrack: "6-4",
+
+      weapons: [
+        { name: "Binary Rifle (Loadout)", range: '15/30"', arcs: "ALL", ap: 8, at: 3, aa: 6, loadouts: ["Cooldown (weapon)", "Lock On", "Lethal (1)", "Pinpoint (ALL)"] }
+      ],
+
+      tags: ["Battle Hardened (3)", "Aerial Insertion", "Stride", "Hijack Resistant", "Armoured Infantry", "Watcher Support", "Scouting Translocation"],
+
+      upgrades: []
+    },
+
+    FOR_KNIGHT_BATTLEWAGON: {
+      id: "FOR_KNIGHT_BATTLEWAGON",
+      faction: "Forerunners",
+      name: "Knight Battlewagon — Siege Master",
+      type: "ARM",
+      br: 2,
+      points: 140,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '6/12"',
+      react: "8/10",
+      soak: 0,
+      melee: 6,
+      damageTrack: "7-5",
+
+      weapons: [
+        { name: "Incineration Cannon (Loadout)", range: '12/24"', arcs: "ALL", ap: 5, at: 7, aa: 2, loadouts: ["Cooldown (weapon)", "Devastating (ARM)", "Armour-Piercing (1)"] }
+      ],
+
+      tags: ["Battle Hardened (4)", "Aerial Insertion", "Stride", "Hijack Resistant", "Armoured Infantry", "Watcher Support"],
+      upgrades: []
+    },
+
+    // =========================
+    // ARMOURED — SENTINEL
+    // =========================
+    FOR_SUPER_SENTINEL: {
+      id: "FOR_SUPER_SENTINEL",
+      faction: "Forerunners",
+      name: "Super Sentinel — Combat Support Drone",
+      type: "ARM",
+      br: 2,
+      points: 120,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '10/15"',
+      react: "9/9",
+      soak: 3,
+      impact: 3,
+      damageTrack: "5-5",
+
+      weapons: [
+        { name: "High-Powered Cleansing Beam", range: '10/20"', arcs: "ALL", ap: 7, at: 6, aa: 4, loadouts: ["Point Blank"] }
+      ],
+
+      tags: ["Stride", "Heroic Save(5+)", "Hijack Resistant", "Suppressive Fire"],
+      upgrades: []
+    },
+
+    FOR_ERADICATOR_SENTINEL: {
+      id: "FOR_ERADICATOR_SENTINEL",
+      faction: "Forerunners",
+      name: "Eradicator — Autonomous Carapace",
+      type: "ARM",
+      br: 5,
+      points: 270,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "11/11",
+      soak: 2,
+      impact: 2,
+      damageTrack: "5-5-5",
+
+      weapons: [
+        { name: "Eradicator Beam", range: '12/24"', arcs: "FRONT", ap: 9, at: 9, aa: 9, loadouts: ["Beam Weapon (3)", "Inferno (2)"] },
+        { name: "Shard Projectors", range: '15"/-"', arcs: "FRONT", ap: 6, at: 2, aa: 4, loadouts: ["Point Blank"] }
+      ],
+
+      tags: ["Stride", "Heroic Save(6+)", "Hijack Resistant", "Concentrated Firepower"],
+      upgrades: []
+    },
+
+    // =========================
+    // FLYERS — SENTINEL
+    // =========================
+    FOR_PROTECTOR_SENTINEL: {
+      id: "FOR_PROTECTOR_SENTINEL",
+      faction: "Forerunners",
+      name: "Protector — Defensive Construct",
+      type: "FLY",
+      br: 2,
+      points: 120,
+      elementsRule: { mode: "each", min: 1, max: 2 },
+
+      move: '12/18"',
+      react: "8/8",
+      soak: 3,
+      damageTrack: "5-5",
+
+      weapons: [
+        { name: "Protector Beam Emitter", range: '10/20"', arcs: "FRONT", ap: 4, at: 8, aa: 4, loadouts: ["Devastating (ARM)"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Sentinel Escort", "Electromagnetic Self-Destruct"],
+      upgrades: []
+    },
+
+    FOR_ENFORCER_SENTINEL: {
+      id: "FOR_ENFORCER_SENTINEL",
+      faction: "Forerunners",
+      name: "Enforcer — Guard Sentinel",
+      type: "FLY",
+      br: 3,
+      points: 180,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '10/15"',
+      react: "9/9",
+      soak: 2,
+      damageTrack: "5-5-4",
+
+      weapons: [
+        { name: "Enforcer Missiles", range: '12/24"', arcs: "FRONT", ap: 7, at: 9, aa: 11, loadouts: ["Blast", "Indirect Fire"] },
+        { name: "Shard Projectors", range: '15"/-"', arcs: "FRONT", ap: 5, at: 2, aa: 3, loadouts: ["Point Blank"] }
+      ],
+
+      tags: ["Elusive (ALL-1)", "Forward Energy Shield", "Gravitic Grapplers"],
+      upgrades: []
+    },
+
+    // =========================
+    // FLYERS — FORERUNNER
+    // =========================
+    FOR_PHAETON: {
+      id: "FOR_PHAETON",
+      faction: "Forerunners",
+      name: "Z-1800 Phaeton — VTOL Weapon Ship",
+      type: "FLY",
+      br: 5,
+      points: 270,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '10/15"',
+      react: "8/10",
+      soak: 3,
+      damageTrack: "6-6-5",
+
+      weapons: [
+        { name: "Light Mass Cannons", range: '10/20"', arcs: "FRONT", ap: 10, at: 2, aa: 6, loadouts: ["Point Blank", "Suppression(+2)"] },
+        { name: "Pulse Missile Launchers", range: '12/24"', arcs: "FRONT", ap: 4, at: 14, aa: 12, loadouts: ["Lock On", "Devastating (FLY)"] }
+      ],
+
+      tags: ["Evasive (1)", "Scour the Skies", "Slipspace Translocation Jump"],
+      upgrades: []
+    },
+
+    // =========================
+    // ASF
+    // =========================
+    FOR_CONSTRUCTOR_SENTINEL_SWARM: {
+      id: "FOR_CONSTRUCTOR_SENTINEL_SWARM",
+      faction: "Forerunners",
+      name: "Constructor Sentinel Swarm",
+      type: "ASF",
+      br: 3,
+      points: 180,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      damageTrack: "4-4-4-4-4",
+      weapons: [],
+
+      tags: ["Heroic Save(5+)", "Evasive (1)", "Dust Off", "High Value Asset (1-0-1-0-1)", "Reconstitution Emitters"],
+      upgrades: []
+    },
+
+    FOR_DESPAIR_CLASS_FIGHTER: {
+      id: "FOR_DESPAIR_CLASS_FIGHTER",
+      faction: "Forerunners",
+      name: "Despair-Class Fighter",
+      type: "ASF",
+      br: 4,
+      points: 200,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      damageTrack: "6-5-5",
+      weapons: [
+        { name: "Despair Weapons Array", range: '20"/-"', arcs: "FRONT", ap: 12, at: 15, aa: 15, loadouts: ["Devastating (ALL)", "Armour-Piercing (2)"] }
+      ],
+
+      tags: ["High Value Asset (1-1-2)"],
+      upgrades: []
+    },
+
+    // =========================
+    // CHARACTERS — PROMETHEAN
+    // =========================
+	FOR_SOLDIER_COMMANDO: {
+	  id: "FOR_SOLDIER_COMMANDO",
+	  faction: "Forerunners",
+	  name: "Soldier Commando — Armiger Overseer",
+	  type: ["CHA","INF"],
+	  br: 2,
+	  points: 130,
+	  elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+	  move: '6/12"',
+	  react: "6/8",
+	  soak: 0,
+	  melee: 4,
+	  damageTrack: "6-3",
+
+	  weapons: [
+		{
+		  name: "Scattershot (Loadout)",
+		  range: '12/18"',
+		  arcs: "ALL",
+		  ap: 8,
+		  at: 5,
+		  aa: 3,
+		  loadouts: ["Limited Range", "Point Blank"]
+		},
+		{
+		  name: "Light Rifle (Loadout)",
+		  range: '16/24"',
+		  arcs: "ALL",
+		  ap: 7,
+		  at: 3,
+		  aa: 5,
+		  loadouts: ["Lock On"]
+		},
+		{
+		  name: "Splinter Cannon (Weapon Drops)",
+		  range: '10/20"',
+		  arcs: "ALL",
+		  ap: 4,
+		  at: 9,
+		  aa: 3,
+		  loadouts: ["Devastating (ARM)"]
+		},
+		{
+		  name: "Splinter Grenade",
+		  range: '10"/-"',
+		  arcs: "ALL",
+		  ap: 4,
+		  at: 5,
+		  aa: 0,
+		  loadouts: ["Immobilize (2)", "Cooldown (weapon)"]
+		}
+	  ],
+
+	  tags: [
+		"Heroic Save(3+)",
+		"Battle Hardened (2)",
+		"Fearless",
+		"Commanding Presence (9”)",
+		"Attachment (PROMETHEAN INF)",
+		"Weapon Drops",
+		"Enforcer Leader"
+	  ],
+
+	  upgrades: [
+		{
+		  id: "COMMANDO_LOADOUT_SCATTERSHOT",
+		  mode: "flat",
+		  label: "Loadout: Scattershot (record on force list)",
+		  cost: 0,
+		  reqGroup: "COMMANDO_LOADOUT",
+		  reqOneOf: true,
+		  reqLabel: "Loadout Weapon (required)",
+		  mutex: true
+		},
+		{
+		  id: "COMMANDO_LOADOUT_LIGHT_RIFLE",
+		  mode: "flat",
+		  label: "Loadout: Light Rifle (record on force list)",
+		  cost: 0,
+		  reqGroup: "COMMANDO_LOADOUT",
+		  reqOneOf: true,
+		  reqLabel: "Loadout Weapon (required)",
+		  mutex: true
+		}
+	  ]
+	},
+
+    FOR_KNIGHT_COMMANDER: {
+      id: "FOR_KNIGHT_COMMANDER",
+      faction: "Forerunners",
+      name: "Knight Commander — Promethean Leader",
+      type: ["CHA","ARM"],
+      br: 3,
+      points: 200,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "7/9",
+      soak: 2,
+      melee: 9,
+      damageTrack: "7-6",
+
+      weapons: [
+        { name: "Dying Star Light Rifle", range: '16/24"', arcs: "ALL", ap: 9, at: 6, aa: 6, loadouts: ["Lock On", "Blast"] },
+        { name: "River of Light Incineration Cannon (upg)", range: '12/24"', arcs: "ALL", ap: 7, at: 10, aa: 4, loadouts: ["Devastating (ARM)", "Armour-Piercing (1)"] }
+      ],
+
+      tags: [
+        "Heroic Save(5+)",
+        "Battle Hardened (6)",
+        "Aerial Insertion",
+        "Stride",
+        "Commanding Presence (6”)",
+        "Attachment (PROMETHEAN KNIGHT)",
+        "Hijack Resistant",
+        "Weapon Drops",
+        "Armoured Infantry",
+        "Watcher Support"
+      ],
+
+      upgrades: []
+    },
+
+    FOR_WARDEN_ETERNAL: {
+      id: "FOR_WARDEN_ETERNAL",
+      faction: "Forerunners",
+      name: "Warden Eternal — Guardian of the Domain",
+      type: ["CHA","ARM"],
+      br: 6,
+      points: 350,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '8/12"',
+      react: "7/9",
+      soak: 3,
+      melee: 9,
+      damageTrack: "8-6-6",
+
+      weapons: [
+        { name: "Hard Light Energy Beam", range: '15/30"', arcs: "FRONT", ap: 15, at: 6, aa: 6, loadouts: ["Lock On"] },
+        { name: "Homing Gravity Bomb", range: '10/20"', arcs: "ALL", ap: 4, at: 14, aa: 14, loadouts: ["Cooldown (weapon)", "Blast", "Indirect Fire", "Immobilize (3)"] }
+      ],
+
+      tags: [
+        "Heroic Save(5+)",
+        "Battle Hardened (6)",
+        "Sundering (ALL)",
+        "Deadly (1)",
+        "Fearless",
+        "Commanding Presence (12”)",
+        "Hijack Resistant",
+        "Running Riot",
+        "Exposed Armor (BACK)",
+        "You Cannot Escape My Wrath"
+      ],
+
+      upgrades: []
+    },
+
+    // =========================
+    // CHARACTERS — SENTINEL
+    // =========================
+    FOR_SUB_MONITOR: {
+      id: "FOR_SUB_MONITOR",
+      faction: "Forerunners",
+      name: "Sub-Monitor — Executor Ancilla",
+      type: ["CHA","INF","FLY"],
+      countsAs: ["CHA","INF"],
+      br: 2,
+      points: 120,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '10/15"',
+      react: "6/6",
+      soak: 0,
+      melee: 3,
+      damageTrack: "6",
+
+      weapons: [
+        { name: "Sub-Monitor Laser", range: '10/20"', arcs: "ALL", ap: 7, at: 6, aa: 6, loadouts: ["Suppression(+2)", "Lethal (1)"] }
+      ],
+
+      tags: [
+        "Heroic Save(3+)",
+        "Fearless",
+        "Commanding Presence (12”)",
+        "Attachment (SENTINEL INF)",
+        "Flying Infantry",
+        "Please begin burning to death!"
+      ],
+
+      upgrades: []
+    },
+
+    FOR_SUB_MONITOR_ERADICATOR_CARAPACE: {
+      id: "FOR_SUB_MONITOR_ERADICATOR_CARAPACE",
+      faction: "Forerunners",
+      name: "Sub-Monitor in Eradicator Carapace",
+      type: ["CHA","ARM"],
+      br: 6,
+      points: 320,
+      elementsRule: { mode: "fixed", min: 1, max: 1 },
+
+      move: '6/12"',
+      react: "10/10",
+      soak: 3,
+      impact: 3,
+      damageTrack: "5-5-5",
+
+      weapons: [
+        {
+          name: "Empowered Eradicator Beam",
+          range: '12/24"',
+          arcs: "FRONT",
+          ap: 11,
+          at: 11,
+          aa: 11,
+          loadouts: ["Beam Weapon (3)", "Inferno (3)", "Devastating (ALL)"]
+        },
+        {
+          name: "Incineration Cannons",
+          range: '12/24"',
+          arcs: "FRONT",
+          ap: 5,
+          at: 7,
+          aa: 3,
+          loadouts: ["Devastating (ARM)", "Armour-Piercing (1)"]
+        }
+      ],
+
+      tags: [
+        "Stride",
+        "Heroic Save(5+)",
+        "Fearless",
+        "Commanding Presence (9”)",
+        "Hijack Resistant",
+        "High Value Target (1)",
+        "Concentrated Firepower"
+      ],
+
+      upgrades: []
+    }
+  }
 },
   
 
@@ -4096,12 +4083,21 @@ function pickPoints(unit, pick){
   for(const upPick of (pick.upgrades||[])){
     const def = (unit.upgrades||[]).find(u=>u.id===upPick.id);
     if(!def) continue;
+
     if(def.mode==="flat") ups += def.cost;
+
     if(def.mode==="choice"){
       const idx = Number(upPick.choiceIndex ?? 0);
       ups += Number(def.choices?.[idx]?.cost ?? 0);
     }
+
+    // ✅ ADD THIS (counted upgrades: 0..max, cost each)
+    if(def.mode==="count"){
+      const c = Number(upPick.count || 0);
+      ups += c * Number(def.costEach || 0);
+    }
   }
+
   return base + ups;
 }
 
@@ -4543,17 +4539,25 @@ function collectArmyRefs(){
         }
       }
 
-      // upgradeWeapons (only selected)
-      const selected = new Set((p?.upgrades || []).map(x => x.id));
-      const up = u.upgradeWeapons || {};
-      for(const upId of selected){
-        for(const ww of (up[upId] || [])){
-          for(const l of (ww.loadouts || [])){
-            const k = normalizeRuleName(l);
-            if(!ruleMap.has(k)) ruleMap.set(k, l);
-          }
-        }
-      }
+		// upgradeWeapons (only selected)
+		const up = u.upgradeWeapons || {};
+		for(const upPick of (p?.upgrades || [])){
+		  const upId = upPick.id;
+		  let arr = up[upId] || [];
+
+		  // choice upgrades can store weapons per selected choice index
+		  if(!Array.isArray(arr) && arr && typeof arr === "object"){
+			const idx = Number(upPick.choiceIndex ?? 0);
+			arr = arr[idx] || [];
+		  }
+
+		  for(const ww of arr){
+			for(const l of (ww.loadouts || [])){
+			  const k = normalizeRuleName(l);
+			  if(!ruleMap.has(k)) ruleMap.set(k, l);
+			}
+		  }
+		}
     }
   }
 
@@ -4605,18 +4609,26 @@ function displayElementsCount(unit, pick){
 
 function displayUpgrades(unit, pick){
   const ups = [];
+
   for(const upPick of (pick.upgrades || [])){
     const def = (unit.upgrades || []).find(u => u.id === upPick.id);
     if(!def) continue;
-    if(def.mode === "flat") ups.push(def.label);
-    else if(def.mode === "choice"){
+
+    if(def.mode === "flat"){
+      ups.push(def.label);
+    }else if(def.mode === "choice"){
       const idx = Number(upPick.choiceIndex ?? 0);
       const choice = def.choices?.[idx];
       ups.push(choice?.label ? `${def.label}: ${choice.label}` : def.label);
+    }else if(def.mode === "count"){
+      const c = Number(upPick.count || 0);
+      if(c > 0){
+        const each = Number(def.costEach || 0);
+        ups.push(`${def.label} x${c}${each ? ` (+${each} each)` : ""}`);
+      }
     }
   }
 
-  // BG free bonuses (readable)
   if(pick?.bgBonus?.reactBonus){
     ups.push(`Battle Group Bonus: +${pick.bgBonus.reactBonus} React (free)`);
   }
@@ -4666,7 +4678,92 @@ function capLineHtml(t){
 
 /** Upgrade UI helpers (MUST exist before renderBGList uses them) */
 function isUpgradeSelected(pick, upId){
-  return (pick.upgrades || []).some(x => x.id === upId);
+  const entry = (pick.upgrades || []).find(x => x.id === upId);
+  if(!entry) return false;
+  // count upgrades are “selected” only if count > 0
+  if(Number.isFinite(entry.count)) return Number(entry.count) > 0;
+  return true; // flat/choice (existing behavior)
+}
+
+function getPickCurrentElements(unit, pick){
+  if(unit?.elementsRule?.mode === "each"){
+    return Number(pick?.countElements ?? unit.elementsRule?.min ?? 1);
+  }
+  return Number(unit?.elementsRule?.min ?? 1);
+}
+
+function getUpgradeDef(unit, upId){
+  return (unit?.upgrades || []).find(u => u.id === upId) || null;
+}
+
+function getSiblingCountInGroup(unit, pick, def){
+  if(!def?.reqGroup) return 0;
+
+  let total = 0;
+  for(const entry of (pick?.upgrades || [])){
+    if(entry.id === def.id) continue;
+
+    const otherDef = getUpgradeDef(unit, entry.id);
+    if(!otherDef) continue;
+    if(otherDef.reqGroup !== def.reqGroup) continue;
+
+    total += Number(entry.count || 0);
+  }
+  return total;
+}
+
+function getMaxAllowedUpgradeCount(unit, pick, def){
+  const elementCap = getPickCurrentElements(unit, pick);
+  const ruleCap = Number(def?.max ?? elementCap);
+
+  // If this count upgrade shares a group with other counted upgrades,
+  // only allow the remaining free elements in that group.
+  if(def?.reqGroup){
+    const siblingsUsed = getSiblingCountInGroup(unit, pick, def);
+    return Math.max(0, Math.min(ruleCap, elementCap - siblingsUsed));
+  }
+
+  return Math.max(0, Math.min(ruleCap, elementCap));
+}
+
+function setUpgradeCount(bgId, pickId, upId, count){
+  const bg = state.battleGroups.find(b => b.bgId === bgId);
+  const pick = bg?.picks?.find(p => p.pickId === pickId);
+  const unit = pick ? getUnit(pick.unitId) : null;
+  if(!bg || !pick || !unit) return;
+
+  const def = (unit.upgrades || []).find(u => u.id === upId);
+  if(!def || def.mode !== "count") return;
+
+  const maxAllowed = getMaxAllowedUpgradeCount(unit, pick, def);
+  let c = Math.max(0, Math.min(maxAllowed, Number(count || 0)));
+
+  // If this upgrade is in a mutex group and we’re setting it > 0,
+  // zero out other counted upgrades in that group first.
+  if(def.mutex && def.reqGroup && c > 0){
+    pick.upgrades = (pick.upgrades || []).map(x => {
+      if(x.id === upId) return x;
+      const other = (unit.upgrades || []).find(u => u.id === x.id);
+      if(other && other.reqGroup === def.reqGroup && other.mode === "count"){
+        return { ...x, count: 0 };
+      }
+      return x;
+    });
+  }
+
+  let entry = (pick.upgrades || []).find(x => x.id === upId);
+  if(!entry){
+    entry = { id: upId, count: 0 };
+    pick.upgrades.push(entry);
+  }
+
+  entry.count = c;
+
+  if(entry.count === 0){
+    pick.upgrades = (pick.upgrades || []).filter(x => x.id !== upId);
+  }
+
+  render();
 }
 
 function toggleUpgrade(bgId, pickId, upId, enabled){
@@ -4740,10 +4837,18 @@ function weaponsText(u, pick, includeStats){
   }
 
   // upgrade weapons ONLY if upgrade is selected
-  const selected = new Set((pick?.upgrades || []).map(x => x.id));
   const up = u.upgradeWeapons || {};
-  for(const upId of selected){
-    const arr = up[upId] || [];
+
+  for(const upPick of (pick?.upgrades || [])){
+    const upId = upPick.id;
+    let arr = up[upId] || [];
+
+    // choice upgrades can store weapons per selected choice index
+    if(!Array.isArray(arr) && arr && typeof arr === "object"){
+      const idx = Number(upPick.choiceIndex ?? 0);
+      arr = arr[idx] || [];
+    }
+
     for(const w of arr){
       if(!includeStats){
         lines.push(w.name);
@@ -4886,8 +4991,29 @@ function setPickElements(bgId, pickId, n){
   const min = Math.max(baseMin, requiredMin || 0);
   const max = baseMax;
 
-  const num = Math.max(min, Math.min(max, Number(n||min)));
+  const num = Math.max(min, Math.min(max, Number(n || min)));
   pick.countElements = num;
+
+  // Clamp count-upgrades to the new actual element count
+  for(const entry of [...(pick.upgrades || [])]){
+    const def = getUpgradeDef(unit, entry.id);
+    if(!def || def.mode !== "count") continue;
+
+    const maxAllowed = getMaxAllowedUpgradeCount(unit, pick, def);
+    const current = Number(entry.count || 0);
+
+    if(current > maxAllowed){
+      entry.count = maxAllowed;
+    }
+  }
+
+  // Remove count-upgrade entries that dropped to 0 after clamping
+  pick.upgrades = (pick.upgrades || []).filter(x => {
+    const def = getUpgradeDef(unit, x.id);
+    if(def?.mode === "count") return Number(x.count || 0) > 0;
+    return true;
+  });
+
   render();
 }
 
@@ -5179,7 +5305,29 @@ function renderBGList(){
 			${upDefs.map(def=>{
             const checked = isUpgradeSelected(p, def.id);
             const isReq = (typeof def.label === "string") && /required/i.test(def.label);
+			if(def.mode === "count"){
+			  const entry = (p.upgrades || []).find(x => x.id === def.id);
+			  const c = Number(entry?.count || 0);
+			  const max = getMaxAllowedUpgradeCount(u, p, def);
+			  const costEach = Number(def.costEach || 0);
 
+			  return `
+				<div class="uprow">
+				  <div style="flex:1;">
+					<span><b>${escapeHtml(def.label)}</b> <span class="uphint">(+${costEach} pts each)</span></span>
+				  </div>
+				  <div style="flex:0 0 120px;">
+					<select
+					  data-act="upCount"
+					  data-bg="${bg.bgId}"
+					  data-pick="${p.pickId}"
+					  data-up="${def.id}">
+					  ${Array.from({length:max+1}, (_,i)=>`<option value="${i}" ${i===c?"selected":""}>${i}</option>`).join("")}
+					</select>
+				  </div>
+				</div>
+			  `;
+			}
             if(def.mode === "choice"){
               const entry = (p.upgrades || []).find(x => x.id === def.id);
               const idx = Number(entry?.choiceIndex ?? 0);
@@ -5235,8 +5383,8 @@ function renderBGList(){
         <div class="item">
           <div class="meta">
             <div class="t">${escapeHtml(u.name)}</div>
-            <div class="s">${badge} <span class="chip">${escapeHtml(formatTypeShort(u.type))}</span> <span class="chip">BR ${br}</span> <span class="chip">${pts} pts</span></div>
-            <div class="s">${escapeHtml(u.weapons?.map(w=>w.name).join(", ") || "—")}${ups ? ` • ${escapeHtml(ups)}` : ""}</div>
+            <div class="s">${badge} <span class="chip">${escapeHtml(formatTypeShort(u))}</span> <span class="chip">BR ${br}</span> <span class="chip">${pts} pts</span></div>
+            <div class="s">${escapeHtml(weaponsText(u, p, false) || "—")}${ups ? ` • ${escapeHtml(ups)}` : ""}</div>
             ${eachCtrl}
             ${upgradesUi}
           </div>
@@ -5301,17 +5449,21 @@ function renderBGList(){
       }
     });
 
-    el.addEventListener("change", (ev)=>{
-      const t = ev.target;
-      if(t && t.matches('input[data-act="togUp"]')){
-        toggleUpgrade(t.dataset.bg, t.dataset.pick, t.dataset.up, t.checked);
-        return;
-      }
-      if(t && t.matches('select[data-act="upChoice"]')){
-        setUpgradeChoice(t.dataset.bg, t.dataset.pick, t.dataset.up, t.value);
-        return;
-      }
-    });
+	el.addEventListener("change", (ev)=>{
+	  const t = ev.target;
+	  if(t && t.matches('input[data-act="togUp"]')){
+		toggleUpgrade(t.dataset.bg, t.dataset.pick, t.dataset.up, t.checked);
+		return;
+	  }
+	  if(t && t.matches('select[data-act="upChoice"]')){
+		setUpgradeChoice(t.dataset.bg, t.dataset.pick, t.dataset.up, t.value);
+		return;
+	  }
+	  if(t && t.matches('select[data-act="upCount"]')){
+		setUpgradeCount(t.dataset.bg, t.dataset.pick, t.dataset.up, t.value);
+		return;
+	  }
+	});
   }
 }
 
@@ -5352,7 +5504,7 @@ function buildRosterText(){
       if(!u) continue;
       const req = isPickRequired(bg, p.pickId) ? "REQ" : "OPT";
       const el = displayElementsCount(u,p);
-      out += `  - [${req}] ${u.name} • ${formatTypeShort(u.type)} • El ${el} • BR ${pickBR(u,p)} • ${pickPoints(u,p)} pts\n`;
+      out += `  - [${req}] ${u.name} • ${formatTypeShort(u)} • El ${el} • BR ${pickBR(u,p)} • ${pickPoints(u,p)} pts\n`;
 
       const bonusReact = Number(p?.bgBonus?.reactBonus || 0);
       const bonusTags = (p?.bgBonus?.addTags || []);
@@ -5556,7 +5708,7 @@ function buildPrintView(){
         const rowCells = {
           unit: `<td><b>${escapeHtml(u.name)}</b></td>`,
           reqopt: `<td>${badge}</td>`,
-          type: `<td>${escapeHtml(formatTypeShort(u.type))}</td>`,
+          type: `<td>${escapeHtml(formatTypeShort(u))}</td>`,
           elements: `<td>${escapeHtml(elCount)}</td>`,
           stats: `<td class="printMuted">${escapeHtml(unitStatsText(u,p))}</td>`,
           wargear: `<td>${wargearHtml}</td>`,
