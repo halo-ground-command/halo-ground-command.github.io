@@ -3027,10 +3027,26 @@ UNITS: {
 
       tags: ["Heroic Save(5+)", "Fearless"],
 
-      upgrades: [
-        { id: "SOLDIERS_SCATTERSHOT", mode: "count", label: "Weapon Upgrade: Scattershot", max: 2, costEach: 10 },
-        { id: "SOLDIERS_LIGHT_RIFLE", mode: "count", label: "Weapon Upgrade: Light Rifle", max: 2, costEach: 10 }
-      ],
+		upgrades: [
+		  {
+			id: "SOLDIERS_SCATTERSHOT",
+			mode: "count",
+			label: "Weapon Upgrade: Scattershot",
+			max: 2,
+			costEach: 10,
+			reqGroup: "SOLDIERS_WEAPON_UPGRADE",
+			mutex: true
+		  },
+		  {
+			id: "SOLDIERS_LIGHT_RIFLE",
+			mode: "count",
+			label: "Weapon Upgrade: Light Rifle",
+			max: 2,
+			costEach: 10,
+			reqGroup: "SOLDIERS_WEAPON_UPGRADE",
+			mutex: true
+		  }
+		],
 
       upgradeWeapons: {
         SOLDIERS_SCATTERSHOT: [
@@ -4127,6 +4143,12 @@ function violatesBgRestrictions(bgTpl, unitId){
   if(!u) return false;
 
   if(bgTpl.faction === "Forerunners"){
+    // Allow the Constructor Sentinel Swarm in Promethean BGs
+    // even though its ID contains "SENTINEL".
+    if(restrict.noSentinel && unitId === "FOR_CONSTRUCTOR_SENTINEL_SWARM"){
+      return false;
+    }
+
     const fam = forerunnerFamily(unitId);
     if(restrict.noSentinel && fam === "SENTINEL") return true;
     if(restrict.noPromethean && fam === "PROMETHEAN") return true;
