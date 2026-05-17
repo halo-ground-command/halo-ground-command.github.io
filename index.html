@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Halo: Ground Command — Force Builder</title>
+  <title>Halo: Ground Command — Force Builder 1.7.1 A26 Hotfix</title>
 
   <style>
     :root{
@@ -377,6 +377,7 @@
 <header>
   <div class="left">
     <h1>Halo: Ground Command — Force Builder</h1>
+    <span class="tag">1.7.1 A26 Hotfix</span>
     <span class="tag">JSON save/load • PDF export</span>
   </div>
   <div class="right">
@@ -601,10 +602,12 @@ RULES_GLOSSARY: {
   // Alphabetical by key
   // =========================================================
   "Berserk": "Once per game, elements in this unit without an Activation Token may perform a Charge Move Action against the target of a successful Reaction Fire Test. After resolving charge/repulse/suppression, that enemy unit continues its activation as normal.",
+  "Chosen of Atriox": "Special rule gained by the Chosen Warrior upgrade; use the exact text from the Chosen Warrior card.",
+  "Combat Drop Assault": "Limited to up to one Unit per Combat Drop.",
   "Cossack Raiders": "Victory Points for BR destruction are awarded to the opponent only when the last element of this unit is destroyed.",
   "Devastating Impact (X)": "Re-roll up to X failed Impact Attack Dice.",
   "Drop Shock": "May perform a Basic, Flat Out, or Charge Move action immediately following deployment via Orbital Insertion.",
-  "Primal Rage": "If one or more elements in this unit are Destroyed, roll 2D6. If the result is equal or greater than its active React statistic, it may immediately perform an out-of-sequence Charge action and Melee Attack against an enemy within its second Move statistic. After resolving, the element(s) are removed as normal.",
+  "Primal Rage": "If one or more Elements with this rule are Destroyed, roll 2D6 for each element. If the result is equal or greater than its active React statistic, those Element(s) may immediately perform an out-of-sequence Charge action and Melee Attack against an enemy within its second Move Statistic, OR may perform a shooting attack action. After which the Element(s) are considered Destroyed and moved to the Scrapyard.",
   "Reinforced Armor Plating": "When engaged in a Ram Attack or Melee, an additional Skull is required to cause Damage to this unit.",
   "Relentless Ram": "During its Activation, after an opponent’s First Reaction opportunity, may forgo a Movement Action to instead make a Ranged Attack followed by a Ram Move Action.",
   "Rocket Burn": "Before any Movement Action, may increase movement to 12/15\". When using Rocket Burn, may ignore intervening terrain and other units, and cannot perform a Ram Attack this activation. Until end of activation, intervening terrain can no longer be Blocking when drawing enemy LOS to this unit.",
@@ -646,7 +649,7 @@ RULES_GLOSSARY: {
   "Slipspace Translocation Jump": "When this unit is chosen to Activate, before an opponent can attempt a Reaction Fire Test, you may declare a Slipspace Translocation Jump. This unit must perform a Flat Out Move and cannot be the target of Reaction Fire until the end of the turn.",
   "Support Protocols": [
     "During this unit’s Activation, after a Hold or Basic Move, you may give this unit a Cooldown Token to use ONE protocol:",
-    "• Protection Protocol: Choose a friendly Promethean Infantry unit (or Knight unit). While that unit is within 6\", increase that unit’s Heroic Save by +1 (min 6+, max 3+). Same unit cannot be chosen more than once per Game Turn.",
+    "• Protection Protocol: Choose a friendly Promethean Infantry unit (or Knight unit). Until this Watcher Unit’s next activation, while that unit is within 6\" of this Watcher Unit, increase that unit’s Heroic Save by +1 (min 6+, max 3+). This ability is disabled if the Watcher Unit is Destroyed. Same unit cannot be chosen more than once per Game Turn.",
     "• Restoration Protocol: Choose a friendly Promethean Infantry unit (excluding Watchers) to return one destroyed element from your Scrapyard. Same unit cannot be chosen more than once per Game Turn."
   ].join("\n"),
   "Suppressive Fire": "Increase the Suppression value of this unit’s listed weapon by +2 for each additional friendly unit contributing to the same attack (as described on the unit card). If the target is successfully Suppressed, until the end of its next Activation it cannot perform a Flat Out or Charge movement.",
@@ -660,7 +663,7 @@ RULES_GLOSSARY: {
   // =========================================================
   "Amplify Gauntlet Torque": "Reminder text (add your exact effect from the card).",
   "Concentrated Beam": "Reminder text (add your exact effect from the card).",
-  "Crash Training": "Reminder text (add your exact effect from the card).",
+  "Crash Training": "If this unit disembarks from a destroyed Transport, it gains an Activation Token after disembarking.",
   "Engage Thrusters!": "Reminder text (add your exact effect from the card).",
   "Gravity Hammer Slam": "Reminder text (add your exact effect from the card).",
   "Infiltrators": "Reminder text (add your exact effect from the card).",
@@ -1223,7 +1226,7 @@ UNITS: {
       type: "ARM",
       br: 1,
       points: 50,
-      elementsRule: { mode: "each", min: 1, max: 2 },
+      elementsRule: { mode: "each", min: 1, max: 3 },
 
       move: '12/18"',
       react: "8/10",
@@ -1232,7 +1235,7 @@ UNITS: {
       damageTrack: "3-2",
 
       weapons: [
-        { name: "Rocket Launcher", range: '12/24"', arcs: "F/R/L", ap: 1, at: 6, aa: 4, loadouts: ["Lock On", "Devastating (FLY)"] }
+        { name: "Rocket Launcher", range: '12/24"', arcs: "F/R/L", ap: 2, at: 5, aa: 3, loadouts: ["Lock On", "Devastating (FLY)"] }
       ],
       tags: ["Aerial Insertion", "Diminutive"]
     },
@@ -1332,12 +1335,12 @@ UNITS: {
 
       move: '8/12"',
       react: "10/12",
-      soak: 3,
+      soak: 4,
       impact: 3,
       damageTrack: "6-6-5",
 
       weapons: [
-        { name: "High-Velocity Cannon", range: '15/30"', arcs: "ALL", ap: 4, at: 16, aa: 2, loadouts: ["Devastating (ARM)"] },
+        { name: "High-Velocity Cannon", range: '15/30"', arcs: "ALL", ap: 4, at: 18, aa: 2, loadouts: ["Devastating (ARM)"] },
         { name: "Heavy Machine Gun", range: '10/20"', arcs: "FRONT", ap: 6, at: 1, aa: 3, loadouts: ["Suppression(+2)"] }
       ],
       tags: ["Aerial Insertion"]
@@ -1446,7 +1449,7 @@ UNITS: {
       damageTrack: "5-5-4",
 
       weapons: [
-        { name: "M38 Auto-Cannon", range: '10/20"', arcs: "FRONT", ap: 14, at: 8, aa: 12, loadouts: ["Devastating (FLY)", "Suppression(+2)"] },
+        { name: "M38 Auto-Cannon", range: '10/20"', arcs: "FRONT", ap: 12, at: 8, aa: 12, loadouts: ["Devastating (FLY)", "Suppression(+2)"] },
         { name: "Heavy Machine Gun", range: '10/20"', arcs: "L & R", ap: 6, at: 1, aa: 3, loadouts: ["Suppression(+2)"] }
       ],
       tags: ["Elusive (ALL-1)"]
@@ -1791,7 +1794,7 @@ UNITS: {
       elementsRule: { mode: "fixed", min: 4, max: 4 },
 
       move: '8/12"',
-      react: "7/9",
+      react: "6/8",
       soak: 0,
       melee: 1,
       damageTrack: "4",
@@ -1843,7 +1846,7 @@ UNITS: {
       react: "7/9",
       soak: 0,
       melee: 3,
-      damageTrack: "6",
+      damageTrack: "5",
 
       weapons: [
         { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 4, at: 3, aa: 2, loadouts: ["Point Blank", "Suppression(+1)"] },
@@ -1859,7 +1862,7 @@ UNITS: {
       name: "Elite Venatores — Covenant Tank-Hunters",
       type: "INF",
       br: 2,
-      points: 160,
+      points: 150,
       elementsRule: { mode: "fixed", min: 3, max: 3 },
 
       move: '6/9"',
@@ -1929,14 +1932,14 @@ UNITS: {
       type: ["INF","FLY"],
       countsAs: ["INF"],
       br: 3,
-      points: 220,
+      points: 200,
       elementsRule: { mode: "fixed", min: 3, max: 3 },
 
       move: '6/9"',
       react: "7/9",
       soak: 0,
       melee: 3,
-      damageTrack: "6",
+      damageTrack: "5",
 
       weapons: [
         { name: "Small Arms", range: '12/18"', arcs: "ALL", ap: 5, at: 2, aa: 3, loadouts: ["Limited Range", "Point Blank"] },
@@ -1947,7 +1950,7 @@ UNITS: {
 
       upgrades: [
         { id: "RANGERS_PLASMA_REPEATERS_X1", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Plasma Repeaters (+10)", cost: 10 },
-        { id: "RANGERS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Elite Ranger Officer (see card)", cost: 30 }
+        { id: "RANGERS_OFFICER", mode: "flat", label: "Officer Upgrade: Up to 1 Element becomes Elite Ranger Officer (DT 5, see card) (+20)", cost: 20 }
       ],
 
       upgradeWeapons: {
@@ -2083,12 +2086,12 @@ UNITS: {
 
       move: '6/12"',
       react: "11/12",
-      soak: 4,
+      soak: 5,
       impact: 2,
       damageTrack: "5-5-5",
 
       weapons: [
-        { name: "Plasma Mortar", range: '10/30"', arcs: "FRONT", ap: 12, at: 8, aa: 0, loadouts: ["Devastating (INF)", "Indirect Fire"] },
+        { name: "Plasma Mortar", range: '10/30"', arcs: "FRONT", ap: 14, at: 8, aa: 0, loadouts: ["Devastating (INF)", "Indirect Fire"] },
         { name: "Medium Plasma Cannon", range: '10/20"', arcs: "FRONT", ap: 6, at: 4, aa: 3, loadouts: ["Point Blank"] }
       ],
       tags: ["Aerial Insertion", "Heavy Ordnance"]
@@ -2351,6 +2354,7 @@ UNITS: {
 		"Heroic Save(3+)",
 		"Battle Hardened (6)",
 		"High Value Target (1)",
+		"Hijack Resistant",
 		"Running Riot",
 		"Engage Thrusters!",
 		"Shardstorm Launcher",
@@ -2390,7 +2394,7 @@ UNITS: {
         { id: "GRUNTS_FUEL_ROD", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Fuel Rod Cannons (+15)", cost: 15 },
         { id: "GRUNTS_PLASMA_LAUNCHERS", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Plasma Launchers (+15)", cost: 15 },
 		{ id: "GRUNTS_ELITE_MERC", mode: "count", label: "Warrior Upgrade: Up to 2 Elements become Elite Mercenaries (see card)", max: 2, costEach: 20 },
-		{ id: "GRUNTS_BRUTE_MINOR", mode: "count", label: "Warrior Upgrade: Up to 2 Elements become Brute Minors (see card)", max: 2, costEach: 20 }
+		{ id: "GRUNTS_BRUTE_MINOR", mode: "count", label: "Warrior Upgrade: Up to 2 Elements become Brute Minors (DT 5-3, see card)", max: 2, costEach: 20 }
       ],
 
       upgradeWeapons: {
@@ -2442,14 +2446,14 @@ UNITS: {
       name: "Brute Warriors — Jiralhanae Pack",
       type: "INF",
       br: 2,
-      points: 160,
+      points: 150,
       elementsRule: { mode: "fixed", min: 3, max: 3 },
 
       move: '6/9"',
       react: "8/10",
       soak: 0,
       melee: 4,
-      damageTrack: "4-4",
+      damageTrack: "5-4",
 
       weapons: [
         { name: "Small Arms", range: '12/20"', arcs: "ALL", ap: 4, at: 2, aa: 2, loadouts: ["Limited Range", "Point Blank"] },
@@ -2459,10 +2463,14 @@ UNITS: {
       tags: ["Battle Hardened (2)", "Primal Rage"],
 
       upgrades: [
-        { id: "BRUTES_CHOSEN_WARRIOR", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Chosen Warrior (see card) (+15)", cost: 15 },
+        { id: "BRUTES_CHOSEN_WARRIOR", mode: "flat", label: "Warrior Upgrade: Up to 1 Element becomes Chosen Warrior (DT 5-4, Chosen of Atriox, see card) (+30)", cost: 30 },
         { id: "BRUTES_RAVAGER", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Ravager (+15)", cost: 15 },
         { id: "BRUTES_BRUTE_SHOT", mode: "flat", label: "Weapon Upgrade: Up to 1 Element becomes Brute Shot (+15)", cost: 15 }
       ],
+
+      upgradeTags: {
+        BRUTES_CHOSEN_WARRIOR: ["Chosen of Atriox"]
+      },
 
       upgradeWeapons: {
         BRUTES_RAVAGER: [
@@ -2496,8 +2504,12 @@ UNITS: {
       tags: ["Elusive (ARM-1)", "Battle Hardened (3)", "Fearless", "Sundering (ARM)", "Jump Packs", "Combat Specialists"],
 
       upgrades: [
-        { id: "JUMPERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Upgrade 1 Element to Jumper Captain (see card) (+30)", cost: 30 }
-      ]
+        { id: "JUMPERS_CAPTAIN", mode: "flat", label: "Officer Upgrade: Upgrade 1 Element to Jumper Captain (gains Primal Rage, see card) (+30)", cost: 30 }
+      ],
+
+      upgradeTags: {
+        JUMPERS_CAPTAIN: ["Primal Rage"]
+      }
     },
 
     BAN_BRUTE_BERSERKERS: {
@@ -2606,7 +2618,7 @@ UNITS: {
 
       move: '8/12"',
       react: "11/12",
-      soak: 3,
+      soak: 4,
       impact: 8,
       damageTrack: "7-6-6",
 
@@ -2924,7 +2936,7 @@ UNITS: {
       name: "Crawler Pack — Aggressive Automatons",
       type: "INF",
       br: 1,
-      points: 80,
+      points: 70,
       elementsRule: { mode: "fixed", min: 5, max: 5 },
 
       move: '8/12"',
@@ -3098,11 +3110,11 @@ UNITS: {
       type: ["INF","FLY"],
       countsAs: ["INF"],
       br: 1,
-      points: 110,
+      points: 100,
       elementsRule: { mode: "fixed", min: 4, max: 4 },
 
       move: '10/15"',
-      react: "8/8",
+      react: "9/9",
       soak: 0,
       melee: 1,
       damageTrack: "4",
@@ -3114,7 +3126,7 @@ UNITS: {
       tags: ["Heroic Save(6+)", "Flying Infantry"],
 
       upgrades: [
-        { id: "AGGRESSOR_ELIMINATOR", mode: "flat", label: "Sentinel Eliminator: Up to 1 Element upgrades to Aggressor Eliminator (+20)", cost: 20 }
+        { id: "AGGRESSOR_ELIMINATOR", mode: "flat", label: "Sentinel Eliminator: Up to 1 Element upgrades to Aggressor Eliminator (React 8/8) (+20)", cost: 20 }
       ]
     },
 
@@ -3163,7 +3175,7 @@ UNITS: {
 	  name: "Knight — Promethean Warrior",
 	  type: "ARM",
 	  br: 2,
-	  points: 110,
+	  points: 120,
 	  elementsRule: { mode: "each", min: 1, max: 2 },
 
 	  move: '6/12"',
@@ -3238,7 +3250,7 @@ UNITS: {
       name: "Knight Lancer — Scout Marksmen",
       type: "ARM",
       br: 2,
-      points: 130,
+      points: 140,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '6/12"',
@@ -3262,7 +3274,7 @@ UNITS: {
       name: "Knight Battlewagon — Siege Master",
       type: "ARM",
       br: 2,
-      points: 140,
+      points: 150,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '6/12"',
@@ -3288,7 +3300,7 @@ UNITS: {
       name: "Super Sentinel — Combat Support Drone",
       type: "ARM",
       br: 2,
-      points: 120,
+      points: 100,
       elementsRule: { mode: "each", min: 1, max: 2 },
 
       move: '10/15"',
@@ -3415,10 +3427,10 @@ UNITS: {
       points: 180,
       elementsRule: { mode: "fixed", min: 1, max: 1 },
 
-      damageTrack: "4-4-4-4-4",
+      damageTrack: "4-4-4-4",
       weapons: [],
 
-      tags: ["Heroic Save(5+)", "Evasive (1)", "Dust Off", "High Value Asset (1-0-1-0-1)", "Reconstitution Emitters"],
+      tags: ["Heroic Save(5+)", "Evasive (1)", "Dust Off", "High Value Asset (1-0-1-0)"],
       upgrades: []
     },
 
@@ -3428,7 +3440,7 @@ UNITS: {
       name: "Despair-Class Fighter",
       type: "ASF",
       br: 4,
-      points: 200,
+      points: 240,
       elementsRule: { mode: "fixed", min: 1, max: 1 },
 
       damageTrack: "6-5-5",
@@ -3537,7 +3549,7 @@ UNITS: {
       name: "Knight Commander — Promethean Leader",
       type: ["CHA","ARM"],
       br: 3,
-      points: 200,
+      points: 220,
       elementsRule: { mode: "fixed", min: 1, max: 1 },
 
       move: '6/12"',
@@ -4264,6 +4276,14 @@ function effectiveReact(unit, pick){
 function effectiveTags(unit, pick){
   const set = new Set();
   (unit.tags || []).forEach(t => set.add(t));
+
+  // Upgrade-specific rules/tags, only counted when that upgrade is selected.
+  const upTags = unit.upgradeTags || {};
+  for(const upPick of (pick?.upgrades || [])){
+    const tags = upTags[upPick.id] || [];
+    tags.forEach(t => set.add(t));
+  }
+
   (pick?.bgBonus?.addTags || []).forEach(t => set.add(t));
   return [...set].filter(Boolean);
 }
