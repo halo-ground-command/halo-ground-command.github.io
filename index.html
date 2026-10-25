@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Halo: Ground Command — Force Builder 1.7.1 A26 Hotfix v2</title>
+  <title>Halo: Ground Command — Force Builder 1.7.3 Post-A26 Playtest</title>
 
   <style>
     :root{
@@ -377,8 +377,8 @@
 <header>
   <div class="left">
     <h1>Halo: Ground Command — Force Builder</h1>
-    <span class="tag">1.7.1 A26 Hotfix v2</span>
-    <span class="tag">JSON save/load • PDF export</span>
+    <span class="tag">1.7.3 Post-A26 Playtest</span>
+    <span class="tag">Community Playtest 1.7.3 • JSON save/load • PDF export</span>
   </div>
   <div class="right">
     <button class="topbtn" id="btnExportPdf">Export to PDF</button>
@@ -3935,6 +3935,259 @@ BATTLEGROUPS: {
 
 
 /* ===========================================================
+   POST-ADEPTICON 2026 COMMUNITY PLAYTEST 1.7.3 DATA UPDATE
+   Source: uploaded faction cards 1.7.3, transport v1.3,
+   loadouts, FAQ and community errata 1.6.1.
+   The Elephant is a separate, explicitly experimental concept.
+   =========================================================== */
+{
+  const U=DB.UNITS, B=DB.BATTLEGROUPS, R=DB.RULES_GLOSSARY;
+  const w=(name,range,arcs,ap,at,aa,loadouts=[])=>({name,range,arcs,ap,at,aa,loadouts});
+  const put=(f,id,patch)=>Object.assign(U[f][id],patch);
+  const flat=(id,label,cost,group=null)=>({id,mode:'flat',label,cost,...(group?{reqGroup:group,mutex:true}:{})});
+  const count=(id,label,costEach,max,group=null,groupMax=null)=>({id,mode:'count',label,costEach,max,...(group?{reqGroup:group}:{ }),...(groupMax?{groupMax}:{})});
+  const add=(f,id,name,type,br,points,elements,move,react,soak,meleeOrImpact,damageTrack,weapons,tags=[],upgrades=[],extra={})=>{
+    U[f][id]={id,faction:f,name,type,br,points,elementsRule:elements,move,react,soak,
+      ...(type==='ARM'?{impact:meleeOrImpact}:type==='FLY'||type==='ASF'?{}:{melee:meleeOrImpact}),
+      damageTrack,weapons,tags,upgrades,...extra};
+  };
+  const fixed=n=>({mode:'fixed',min:n,max:n});
+  const each=(min,max)=>({mode:'each',min,max});
+
+  // Shared loadouts: exact community intent instead of old 1.7.1 summaries.
+  Object.assign(R,{
+    'Active Overwatch':'Re-roll failed Reaction Fire Dice. The second result must be accepted.',
+    'Aerial Insertion':'An Armoured Unit with this loadout may deploy via Combat Drop rules for Air Support Flyers. Follow any unit-specific restrictions.',
+    'Attachment':'An Element may attach to Units of the listed type and may deploy already attached in the same Battle Group. Heroic Characters cannot attach to other Heroic Character Units. See the core rulebook for joining/leaving and vehicle destruction.',
+    'Armoured Infantry':'May occupy Garrisonable Terrain, benefit from Terrain Cover, and capture Placed Objectives as though Infantry.',
+    'Battle Hardened':'Re-roll up to X failed Melee Attack Dice; this loadout stacks.',
+    'Blast':'Ignore Terrain when determining Firepower Rating.',
+    'Commanding Presence':'Increase all friendly Reaction Fire Tests within X inches by 1; reduce all friendly Suppression Tests within X inches by 1. It does not affect the source itself and multiple auras do not stack.',
+    'Cooldown':'A weapon with Cooldown may only fire once per Game Turn.',
+    'Deadly (X)':'Melee Attacks by this Unit may worsen enemy Heroic Save by X.',
+    'Devastating':'A Ranged Attack including a weapon with Devastating gains +1 Firepower Rating against the specified enemy type.',
+    'Evasive':'Subtract X from all Reaction Fire Tests targeting this Unit.',
+    'Fearless':'Re-roll failed Suppression Tests. Second result must be accepted.',
+    'Firepower Rating':'Calculate defensive modifiers before offensive ones. Firepower Saturation follows the majority of target Elements, rounding down if tied.',
+    'Heroic Save':'Ignore Damage on a D6 roll equal to or higher than X. Apply Damage Tokens, then make saves; any excess hits can be applied in further rounds.',
+    'Hijack Resistant':'Cannot be Hijacked.',
+    'Immobilize (X)':'If every Element with Immobilize weapons targets the same ARM or FLY Unit, it takes a Suppression Test after damage, even if no damage is dealt; add X to that test.',
+    'Indirect Fire':'May attack without Line of Sight. All IDF attacks resolve at Firepower Rating 2 with no modifiers of any kind.',
+    'Inferno':'If every Element with an Inferno weapon targets the same enemy, it takes a Suppression Test even if no damage is dealt. On failure, immediately Repulse away from the attacker; add X if within Terrain.',
+    'Lethal':'Reduce the enemy Heroic Save by X for the attack.',
+    'Move or Fire':'This Element gains a Cooldown Token when it moves.',
+    'Reaction Fire':'Only successful Reaction Fire tests give a Ready unit an Activation Token. An already Activated unit gets a Cooldown Token after successfully reacting.',
+    'Scour the Skies':'React on 7/9 against Flyer Units.',
+    'Suppression':'Add the largest applicable Suppression (X) modifier to an enemy Suppression Test; modifiers from multiple Suppression weapons do not stack.',
+    'Suppression Test':'A result of 10 or more on 2D6 after modifiers suppresses the unit. Give Ready/Activating units an Activation Token; already Activated units a Cooldown Token. Heroic Saves do not prevent a test if damage was initially inflicted.',
+    'Transport (X)':'May embark up to X Units of the specified type; embarking and disembarking follow Transport v1.3. Shooting by occupants requires a separate Firing Port loadout.',
+    'Firing Port':'Up to X embarked Elements may add weapons to the transport’s attacks within the listed arcs. They cannot use grenades or Move or Fire weapons.',
+    'High Value Asset':'Instead of ordinary destruction BR scoring, the opponent receives VP per Damage Token, according to the unit’s listed damage-track VP distribution.',
+    'Limited Asset':'No more than one of this Unit may be selected as a non-requisite Unit across the entire Force.',
+    'Diminutive':'This Vehicle is treated as an Infantry Element for Line of Sight only.',
+    'Underslung Blade':'Add 2 to this unit’s Melee statistic.',
+    'Intimidating Presence':'Decrease enemy Reaction Fire Test results within X inches by the stated value; increase enemy Suppression Test results within X inches by that value.',
+    'Sundering (Type)':'The specified non-Skull Halo dice results count as Skulls in Melee against the indicated Unit Type. Refer to the core dice key.',
+    'Running Riot':'May perform a Movement, Shooting Attack and Charge in the same Activation, but cannot use second Movement value for the remainder of the Game Turn.',
+    'Expendable':'This Unit cannot benefit from Reinforcement Missions or return Elements from the Scrapyard through Special Rules.',
+    'Minimum Range':'This weapon cannot fire at Short Range.',
+    'Rocket Volley Fire':'Once per game in this Unit’s Activation, its M260 MLRS can split a Shooting Attack between two enemy Units (one Flyer and one INF or ARM). Only the MLRS fires; gain a Cooldown Token afterward.',
+    'Lock-Down Mode':'A Kodiak can enter Lock-Down Mode after a Hold Move, repulsing Units within 2 inches. In this mode it can fire the Rapid Fire Howitzer but cannot move other than Hold until it exits; it cannot be Repulsed, and attacking enemies in Melee/Ram are Repulsed if the Kodiak survives.',
+    'Deploy Shrapnel Mines':'Forgo Shooting to place a mine within 6 inches. The mine triggers against enemy INF/ARM within 3 inches: FP5 Blast, 3 Halo dice per target element. Damage reduces next Activation movement by 3 inches. Only one active mine per Assault Grunt Unit.',
+    'Marauder Raid':'Forgo Movement to Ram using the first Movement statistic, then Shoot a new target. An enemy may attempt Reaction Fire after the Ram and before the shooting attack.',
+    'Lone Hunt':'When no other friendly Unit is within 12 inches, gain Stride and Devastating Impact (5). Not active on a Turn arriving from Reserves or Combat Drop.',
+    'Combat Avoidant':'On successful Reaction Fire test, this unit performs a Basic Move instead of Shooting.',
+    'Focused Maintenance':'After Hold or Basic Move, take a Cooldown Token and choose Overshield or Rapid Repairs.',
+    'Overshield':'Choose friendly Infantry. While within 6 inches, until replaced, improve non-Heroic Elements’ Heroic Save by 1 (maximum 3+, minimum 6+). Disabled when Engineer destroyed; same unit once per turn.',
+    'Rapid Repairs':'Remove one Damage Token from friendly non-Heroic ARM or FLY within 6 inches; each unit can benefit once per Game Turn.',
+    'Constructor Beam Emitter':'After Hold or Basic Move, remove one Damage Token from a friendly non-Heroic ARM/FLY within 8 inches; same target at most once per Game Turn.',
+    'Shield Pylon Launchers':'After Hold or Basic Move, deploy a Shield Pylon Drone in base contact with friendly Infantry within 8 inches. Each drone improves Cover by one level; maximum two deployed per Eos, removed with target or Eos.',
+    'Electromagnetic Self-Destruct':'When this Element is destroyed, its listed Halo dice result triggers an attack against friendly and enemy units within 6 inches: FP3 with Blast and Immobilize (3), dice equal to its combined Damage Track.',
+    'Forward Operating Base':'Once per game, replenish a friendly Unit within 12 inches from the Scrapyard. A Unit can be reinforced only once per game; multi-element Character Infantry cannot be reinforced.',
+    'Recovery Crane':'After Hold or Basic Move, remove one Damage Token from friendly non-Heroic ARM or FLY within 8 inches. Once per target per Game Turn.',
+    'High Density Armor Plating':'Enemy Ram and Melee attacks require one additional Skull to cause Damage.',
+    'Explosive Destruction':'Upon destruction, attack all friendly and enemy units within the specified distance at FP3 with Blast using the listed number of dice.',
+    'Vehicle Cargo Bay':'The Elephant may embark three Mongeese, one Warthog of any variant, or one Cyclops in place of one Infantry Unit; embarked vehicles cannot fire through Firing Ports.',
+    'Transport (2)':'May embark up to two Infantry Units (Elephant concept).',
+    'Firing Port 2 (ALL)':'Up to two embarked Elements may fire from all arcs.',
+    'Firing Port 4 (ALL)':'Up to four embarked Elements may fire from all arcs.'
+  });
+  // Back-compat aliases already embedded in earlier saved rosters.
+  R['Attachment (INF/ARM/ALL)']=R.Attachment;
+  R['Commanding Presence (range)']=R['Commanding Presence'];
+
+  // UNSC 1.7.2+ weapons and new 1.7.3 vehicles.
+  put('UNSC','UNSC_MARINES',{
+    upgrades:[flat('MARINE_SERGEANT','Marine Sergeant: Upgrade one Element (+15)',15),
+      flat('MARINES_LMG','Weapon Team: one Element with Light Machine Guns (+20)',20,'MARINES_WEAPONS'),
+      flat('MARINES_ROCKET','Weapon Team: one Element with Rocket Launchers (+20)',20,'MARINES_WEAPONS'),
+      flat('MARINES_SNIPER','Weapon Team: one Element with Sniper Rifle (+10)',10,'MARINES_WEAPONS')],
+    upgradeWeapons:{
+      MARINES_LMG:[w('Light Machine Guns (upg)','12/18"','ALL',5,2,3,['Devastating (INF)'])],
+      MARINES_ROCKET:[w('Rocket Launchers (upg)','12/24"','ALL',2,7,5,['Lock On','Devastating (FLY)'])],
+      MARINES_SNIPER:[w('Sniper Rifle (upg)','15/30"','ALL',7,4,3,['Cooldown (weapon)','Lock On','Lethal (1)','Pinpoint (INF)'])]
+    }
+  });
+  add('UNSC','UNSC_WOLVERINE','M9 Wolverine — Main Anti-Aircraft Tank','ARM',3,160,each(1,2),'8/12"','9/10',3,3,'6-5',[
+    w('M260 MLRS','10/30"','FRONT',3,5,8,['Blast','Devastating (FLY)']),
+    w('Grenade Launcher','10/20"','F/L/R',6,4,1,['Blast'])],['Aerial Insertion','Scour the Skies','Rocket Volley Fire']);
+  add('UNSC','UNSC_KODIAK','M400 Kodiak — Siege Artillery System','ARM',5,250,fixed(1),'6/10"','10/12',3,3,'5-5-4',[
+    w('Rapid Fire Howitzer*','10/40"','F/L/R',16,8,0,['Blast','Indirect Fire','Minimum Range','Suppression(+2)']),
+    w('Heavy Machine Gun','10/20"','F/L/R',6,1,3,['Suppression(+2)'])],['Lock-Down Mode']);
+  put('UNSC','UNSC_MASTODON',{tags:['Transport 1 (INF)','Firing Port 2 (ALL)']});
+  put('UNSC','UNSC_SPARTAN_SPI_FIRETEAM',{tags:[
+    'Fearless','Battle Hardened (3)','Heroic Save(5+)','Cloaking','Evasive (1)','Stride','Combat Specialists','Infiltrators','High Value Target (1)','Limited Asset']});
+
+  // Covenant: new support/infantry, 1.7.3 balance, new optional weapons.
+  put('Covenant','COV_WRAITH',{soak:4});
+  put('Covenant','COV_AA_WRAITH',{soak:4});
+  put('Covenant','COV_SHADOW',{soak:3,tags:['Transport 1 (INF)','Firing Port 2 (ALL)','Powerful Gravitic Fields']});
+  put('Covenant','COV_GOBLIN',{tags:['Stride','Heroic Save(3+)','Battle Hardened (6)','Deadly (1)','High Value Target (1)','Hijack Resistant','Limited Asset','Running Riot','Engage Thrusters!','Shardstorm Launcher']});
+  put('Covenant','COV_ELITE_WARRIORS',{
+    upgrades:[flat('ELITE_WARRIOR_BEAM','Weapon Team: one Element with Beam Rifle (+20)',20,'ELITE_WARRIOR_WEAPON'),
+      flat('ELITE_WARRIOR_FUEL','Weapon Team: one Element with Fuel Rod Cannon (+20)',20,'ELITE_WARRIOR_WEAPON')],
+    upgradeWeapons:{
+      ELITE_WARRIOR_BEAM:[w('Beam Rifles (upg)','15/30"','ALL',7,2,0,['Cooldown (weapon)','Lock On','Lethal (1)','Pinpoint (INF)'])],
+      ELITE_WARRIOR_FUEL:[w('Fuel Rod Cannons (upg)','15/20"','ALL',2,7,2,['Point Blank'])]
+    }
+  });
+  const ultra=U.Covenant.COV_ELITE_ULTRA_UNIT;
+  ultra.upgrades.push(flat('ELITE_ULTRA_PLASMA_LAUNCHER','Weapon Team: one Element with Plasma Launcher (+20)',20));
+  ultra.upgradeWeapons={...ultra.upgradeWeapons,ELITE_ULTRA_PLASMA_LAUNCHER:[w('Plasma Launcher (upg)','12/24"','ALL',2,5,8,['Lock On','Devastating (FLY)'])]};
+  add('Covenant','COV_BRUTE_HUNTING_PACK','Brute Hunting Pack — Frontline Breakers','INF',3,200,fixed(4),'6/9"','8/10',0,4,'5-4',[
+    w('Small Arms','12/20"','ALL',4,2,2,['Limited Range','Point Blank']),
+    w('Plasma Grenades','10"/-','ALL',4,3,0,['Blast','Cooldown (weapon)'])],
+    ['Battle Hardened (1)','Combat Specialists','Expendable','Primal Rage'],
+    [flat('HUNTING_BRUTE_SHOT','Weapon Team: one Element with Brute Shot (+20)',20)],{
+      upgradeWeapons:{HUNTING_BRUTE_SHOT:[w('Brute Shot (upg)','20"/-','ALL',6,4,2,['Blast','Underslung Blade'])]}});
+  add('Covenant','COV_ENGINEER','Engineer — Huragok Support Unit','FLY',2,130,fixed(1),'6/12"','8/10',3,0,'3-3',[],
+    ['Evasive (2)','Elusive (ALL-1)','Diminutive','Combat Avoidant','Focused Maintenance','Overshield','Rapid Repairs']);
+  R['Powerful Gravitic Fields']='May embark a Hunter Unit or a Ghost Unit with up to 2 Elements instead of 1 Infantry Unit. Units transported this way cannot fire through Firing Ports.';
+
+  // Banished: 1.7.3 changes and 1.7.2 units.
+  put('Banished','BAN_TERROR_WRAITH',{soak:3});
+  put('Banished','BAN_HUNTER_CAPTAIN',{tags:[...U.Banished.BAN_HUNTER_CAPTAIN.tags,'Limited Asset']});
+  put('Banished','BAN_WAR_SKIFF',{tags:['Transport 1 (INF)','Firing Port 2 (ALL)'],weapons:[
+    w('Missile Launchers','10/20"','FRONT',2,6,8,['Lock On','Devastating (FLY)']),
+    w('Light Plasma Cannon','10/20"','ALL',6,4,3,['Point Blank'])]});
+  // Grunt Warrior upgrades share a collective maximum of two Elements.
+  for(const up of U.Banished.BAN_GRUNTS.upgrades.filter(x=>['GRUNTS_ELITE_MERC','GRUNTS_BRUTE_MINOR'].includes(x.id))){
+    up.reqGroup='BAN_GRUNT_WARRIORS';up.groupMax=2;
+  }
+  add('Banished','BAN_ASSAULT_GRUNTS','Assault Grunts — Armored Unggoy','INF',2,90,fixed(4),'6/9"','8/10',0,1,'3',[
+    w('Small Arms','12/18"','ALL',3,2,2,['Limited Range','Point Blank']),
+    w('Plasma Grenades','10"/-','ALL',3,2,0,['Blast','Cooldown (weapon)'])],['Heroic Save(6+)','Deploy Shrapnel Mines'],
+    [count('ASSAULT_GRUNT_DISRUPTOR','Weapon Upgrade: up to 2 Elements with Disruptor Pistols (+20 total)',10,2)],{
+      upgradeWeapons:{ASSAULT_GRUNT_DISRUPTOR:[w('Disruptor Pistols (upg)','12/18"','ALL',3,3,3,['Immobilize (2)'])]}});
+  // The +20 applies to the unit, irrespective of one/two replaced Elements. See adjustment below.
+  U.Banished.BAN_ASSAULT_GRUNTS.upgrades[0].costTotal=20;
+  add('Banished','BAN_MARAUDER','Marauder — Armored War-Sled','ARM',3,200,fixed(1),'10/20"','8/10',3,5,'5-4-4',[
+    w('Light Plasma Mortar','10/25"','ALL',5,4,2,['Devastating (INF)','Blast']),
+    w('Missile Launchers','10/20"','ALL',2,6,8,['Lock On','Devastating (FLY)'])],
+    ['Aerial Insertion','Devastating Impact (2)','Marauder Raid','Lone Hunt']);
+
+  // Forerunners: PDF 1.7.3 is the baseline (including 80pt Crawlers).
+  put('Forerunners','FOR_CRAWLER_PACK',{points:80});
+  put('Forerunners','FOR_REGULATOR_SENTINELS',{points:160});
+  put('Forerunners','FOR_ENFORCER_SENTINEL',{points:200});
+  put('Forerunners','FOR_SUB_MONITOR',{react:'7/7'});
+  put('Forerunners','FOR_CONSTRUCTOR_SENTINEL_SWARM',{
+    tags:['Heroic Save(5+)','Elusive (ALL-1)','Evasive (1)','Dust Off','High Value Asset (0-1-1-1)']});
+  put('Forerunners','FOR_WARDEN_ETERNAL',{tags:[...U.Forerunners.FOR_WARDEN_ETERNAL.tags,'Limited Asset']});
+  put('Forerunners','FOR_SOLDIER_ENFORCERS',{
+    weapons:[U.Forerunners.FOR_SOLDIER_ENFORCERS.weapons[0],U.Forerunners.FOR_SOLDIER_ENFORCERS.weapons[3]],
+    upgrades:[
+      {id:'ENFORCERS_TEAM_SPLINTER',mode:'flat',label:'Weapon Team: all 3 Elements with Splinter Cannon (no cost)',cost:0,reqGroup:'ENFORCERS_WEAPON_TEAM',mutex:true},
+      {id:'ENFORCERS_TEAM_HYDRA',mode:'flat',label:'Weapon Team: all 3 Elements with Hydra (no cost)',cost:0,reqGroup:'ENFORCERS_WEAPON_TEAM',mutex:true}],
+    upgradeWeapons:{
+      ENFORCERS_TEAM_SPLINTER:[w('Splinter Cannon (upg)','10/20"','ALL',3,5,1,['Devastating (ARM)'])],
+      ENFORCERS_TEAM_HYDRA:[w('Hydra (upg)','12/24"','ALL',1,3,5,['Devastating (FLY)','Blast'])]
+    }
+  });
+  put('Forerunners','FOR_CRAWLER_SNIPER',{
+    weapons:[U.Forerunners.FOR_CRAWLER_SNIPER.weapons[0]],
+    upgradeWeapons:{CRAWLER_BINARY_TEAM:[w('Binary Rifles (upg)','15/30"','ALL',5,3,0,['Cooldown (weapon)','Lock On','Lethal (1)','Pinpoint (ALL)'])]}
+  });
+  put('Forerunners','FOR_REGULATOR_SENTINELS',{
+    weapons:[U.Forerunners.FOR_REGULATOR_SENTINELS.weapons[0]],
+    upgradeWeapons:{REGULATOR_SHOCK_TEAM:[w('Regulator Shock (upg)','16/24"','ALL',2,5,6,['Lock On','Immobilize (2)'])]}
+  });
+  const cmd=U.Forerunners.FOR_SOLDIER_COMMANDO;
+  cmd.weapons=cmd.weapons.filter(x=>x.name==='Splinter Grenade');
+  cmd.upgradeWeapons={
+    COMMANDO_LOADOUT_SCATTERSHOT:[w('Scattershot (Loadout)','12/18"','ALL',8,5,3,['Limited Range','Point Blank'])],
+    COMMANDO_LOADOUT_LIGHT_RIFLE:[w('Light Rifle (Loadout)','16/24"','ALL',7,3,5,['Lock On'])]
+  };
+  add('Forerunners','FOR_PHAETON_EOS','Z-1800 Phaeton Eos — VTOL Support Ship','FLY',5,270,fixed(1),'10/15"','8/10',3,0,'6-6-5',[
+    w('Eos Sentinel Beam','10/20"','ALL',10,6,6,['Suppression(+2)','Devastating (INF)'])],
+    ['Evasive (1)','Constructor Beam Emitter','Shield Pylon Launchers','Slipspace Translocation Jump']);
+
+  // Specialist battlegroups from the current faction PDFs.
+  B.UNSC.BG_UNSC_ODST_RRF={
+    id:'BG_UNSC_ODST_RRF',faction:'UNSC',name:'ODST Rapid Reaction Force',type:'Specialist',
+    required:[{slotId:'REQ_ODST_1',label:'Required non-Heroic ODST Unit 1',qty:1,allowed:['UNSC_ODST_AIR_ASSAULT','UNSC_HELLJUMPERS']},
+      {slotId:'REQ_ODST_2',label:'Required non-Heroic ODST Unit 2',qty:1,allowed:['UNSC_ODST_AIR_ASSAULT','UNSC_HELLJUMPERS']}],
+    caps:{optionalInfBR:6,optionalArmBR:0,optionalFlyBR:0,optionalCharCount:0},
+    specialRules:'Drop Pod Strike: Once per Game Turn, when performing Orbital Insertion, a Unit in this Battle Group may place the Insertion Point within 2 inches of enemies. One enemy Unit within 4 inches of the token (excluding Garrisoned or Emplacement Units) suffers an automatic Damage Token (Heroic Save allowed). Then move the token out of impassable terrain and model restrictions as normal.'
+  };
+  B.Covenant.BG_COV_SPECTRAL_HOST={
+    id:'BG_COV_SPECTRAL_HOST',faction:'Covenant',name:'Spectral Host',type:'Specialist',
+    required:[
+      {slotId:'REQ_GHOST_1',label:'Required Storm Ghost 1',qty:1,allowed:['COV_STORM_GHOST']},
+      {slotId:'REQ_GHOST_2',label:'Required Storm Ghost 2',qty:1,allowed:['COV_STORM_GHOST']},
+      {slotId:'REQ_GHOST_3',label:'Required Storm Ghost 3 (may replace with 1 Revenant)',qty:1,allowed:['COV_STORM_GHOST','COV_REVENANT']}],
+    caps:{optionalInfBR:0,optionalArmBR:0,optionalFlyBR:6,optionalCharCount:0},
+    specialRules:'The Swift Death: Storm Ghost and Revenant Units in this Battle Group cannot be the target of Reaction Fire after performing a Move during their Activation.'
+  };
+  B.Banished.BG_BAN_VOLATILE_PACK={
+    id:'BG_BAN_VOLATILE_PACK',faction:'Banished',name:'Volatile Pack',type:'Specialist',
+    required:[{slotId:'REQ_BANSHEE_1',label:'Required Terror Banshee 1',qty:1,allowed:['BAN_TERROR_BANSHEE'],minElements:1},
+      {slotId:'REQ_BANSHEE_2',label:'Required Terror Banshee 2',qty:1,allowed:['BAN_TERROR_BANSHEE'],minElements:1}],
+    caps:{optionalInfBR:6,optionalArmBR:0,optionalFlyBR:6,optionalCharCount:0},
+    optionalAllow:['BAN_BRUTE_JUMPERS','BAN_TERROR_BANSHEE','BAN_PHANTOM','BAN_GRIEVER'],
+    specialRules:'Strapped with Explosives: Terror Banshees in this Battle Group have Soak 2.\nUnstable Blast: When a Terror Banshee or the final Element of a Brute Jumper Unit would be destroyed, it may move its first Movement value into base contact with an enemy and resolve a Transport Destruction explosion before removal. Resolve only if the Primal Rage test fails.'
+  };
+
+  // Eradication Force requires two Sentinel Elements. Two separate Enforcer
+  // Units (one Element each) or a single two-Element Protector Unit qualify.
+  const eradicationSentinels=B.Forerunners.BG_FOR_ERADICATION_FORCE.required.find(x=>x.slotId==='REQ_ENFORCER_OR_PROTECTOR');
+  eradicationSentinels.qty=2;
+  delete eradicationSentinels.minElements;
+  eradicationSentinels.minTotalElements=2;
+  eradicationSentinels.homogeneous=true;
+  eradicationSentinels.label='Required Enforcer or Protector Sentinel Elements (2 total, same variant)';
+  // Skewer is a Weapon Drop acquired on the battlefield, not a pre-game choice.
+  const captain=U.Banished.BAN_BRUTE_CAPTAIN;
+  captain.upgrades=captain.upgrades.filter(x=>x.id!=='CAPTAIN_SKEWER');
+  delete captain.upgradeWeapons.CAPTAIN_SKEWER;
+  R['Weapon Drop']='On contacting a Supply Drop or Placed Objective, replace the current weapon with one listed on the Unit Card, without additional points.';
+  R['Massive Unit (Experimental)']='Massive units have additional Damage Tracks, weapons and abilities. Asterisks indicate statistics or abilities lost as damage is sustained; see the separate Elephant concept PDF.';
+  // Air Support Flyer reference Soak values from the 1.7.3 profiles.
+  put('UNSC','UNSC_PELICAN',{soak:4});
+  put('UNSC','UNSC_LONGSWORD',{soak:5});
+  put('Covenant','COV_PHANTOM',{soak:5});
+  put('Covenant','COV_SERAPH',{soak:6});
+  put('Banished','BAN_PHANTOM',{soak:5});
+  put('Banished','BAN_GRIEVER',{soak:4});
+  put('Forerunners','FOR_DESPAIR_CLASS_FIGHTER',{soak:4});
+  // Optional experimental supplement — not part of the core 1.7.3 faction sheet.
+  add('UNSC','UNSC_ELEPHANT_CONCEPT','M313 Elephant — Heavy Recovery Vehicle [EXPERIMENTAL]','ARM',10,500,fixed(1),'10/15"','10/12',4,5,'7-7 / 6-6 / 5-5',[
+    w('Heavy Machine Gun','10/20"','L & R',6,1,3,['Suppression(+2)'])],
+    ['Massive Unit (Experimental)','Transport (2)','Firing Port 4 (ALL)','High Value Asset (0-4-0-3-0-3)','Explosive Destruction 15 (6")','Vehicle Cargo Bay','Forward Operating Base','Recovery Crane','High Density Armor Plating'],
+    [{id:'ELEPHANT_LOADOUT',mode:'choice',label:'Primary weapon (required)',reqOneOf:true,reqGroup:'ELEPHANT_LOADOUT',choices:[{label:'Chaingun',cost:0},{label:'Rocket Launcher',cost:0},{label:'Gauss Cannon',cost:0}]}],{
+      upgradeWeapons:{ELEPHANT_LOADOUT:{
+        0:[w('Chaingun (Loadout)','10/20"','FRONT',8,3,6,['Suppression(+2)'])],
+        1:[w('Rocket Launcher (Loadout)','12/24"','FRONT',2,6,8,['Lock On','Devastating (FLY)'])],
+        2:[w('Gauss Cannon (Loadout)','12/24"','FRONT',3,9,3,['Devastating (ARM)'])]}}
+    });
+  B.UNSC.BG_UNSC_ELEPHANT_EXPERIMENTAL={id:'BG_UNSC_ELEPHANT_EXPERIMENTAL',faction:'UNSC',name:'Elephant Support Force [EXPERIMENTAL]',type:'Specialist / Concept',
+    required:[{slotId:'REQ_ELEPHANT',qty:1,label:'Required M313 Elephant',allowed:['UNSC_ELEPHANT_CONCEPT']}],
+    caps:{optionalInfBR:4,optionalArmBR:4,optionalFlyBR:0,optionalCharCount:0},
+    specialRules:'Experimental Massive Unit concept by Vincent Colborn; not a standard 1.7.3 faction unit. Embarkation as per Elephant concept document.'};
+}
+
+
+/* ===========================================================
    2) SMALL UTILITIES (safe, no state)
    =========================================================== */
 
@@ -3971,7 +4224,7 @@ const uid = () => Math.random().toString(36).slice(2,10);
    =========================================================== */
 
 let state = {
-  version: "HGC_FORCE_BUILDER",
+  version: "HGC_FORCE_BUILDER_1_7_3",
   playerName: "",
   forceName: "",
   faction: "UNSC",
@@ -4095,8 +4348,33 @@ function pickElementCount(unit, pick){
   return 1;
 }
 
+function effectiveBuildRating(unit){
+  const hvt=(unit.tags||[]).map(t=>String(t).match(/^High Value Target\s*\((\d+)\)/i)).find(Boolean);
+  return Math.max(0,Number(unit.br||0)-(hvt?Number(hvt[1]):0));
+}
 function pickBR(unit, pick){
-  return unit.br * pickElementCount(unit, pick);
+  return effectiveBuildRating(unit) * pickElementCount(unit, pick);
+}
+function requiredSlotFill(bg,req){
+  const ids=bg.requiredFilled?.[req.slotId]||[];
+  if(!req.minTotalElements) return ids.length;
+  return ids.reduce((sum,id)=>{
+    const pick=bg.picks.find(p=>p.pickId===id),unit=pick&&getUnit(pick.unitId);
+    return sum+(unit ? (unit.elementsRule?.mode==='each' ? pickElementCount(unit,pick) : Number(unit.elementsRule?.min||1)) : 0);
+  },0);
+}
+function optionalHeroLimit(){
+  const cmd=getCommander(state.commanderId);
+  return Math.floor(Math.max(0,Number(state.mfv||0))/1000) * Number(cmd?.optionalHeroicPer1000 ?? 1);
+}
+function optionalHeroCount(){
+  return state.battleGroups.reduce((total,bg)=>total+bg.picks.filter(p=>{
+    const u=getUnit(p.unitId);
+    return u && !isPickRequired(bg,p.pickId) && unitBuckets(u).includes('CHAR');
+  }).length,0);
+}
+function optionalLimitedAssetCount(unitId){
+  return state.battleGroups.reduce((total,bg)=>total+bg.picks.filter(p=>p.unitId===unitId && !isPickRequired(bg,p.pickId)).length,0);
 }
 
 /**
@@ -4122,7 +4400,7 @@ function pickPoints(unit, pick){
     // ✅ ADD THIS (counted upgrades: 0..max, cost each)
     if(def.mode==="count"){
       const c = Number(upPick.count || 0);
-      ups += c * Number(def.costEach || 0);
+      ups += def.costTotal != null ? (c>0 ? Number(def.costTotal):0) : c * Number(def.costEach || 0);
     }
   }
 
@@ -4340,7 +4618,7 @@ function validateBG(bg){
 
   for(const req of (tpl?.required||[])){
     const filledPickIds = (bg.requiredFilled?.[req.slotId] || []);
-    const filled = filledPickIds.length;
+    const filled = requiredSlotFill(bg,req);
     if(filled < req.qty) missing.push(`${req.label} (${filled}/${req.qty})`);
 
     const minReq = Number(req.minElements || 0);
@@ -4368,6 +4646,10 @@ function validateBG(bg){
     if(t.optChar  > t.caps.optionalCharCount) capIssues.push(`Optional CHAR ${t.optChar}/${t.caps.optionalCharCount}`);
   }
 
+  if(Array.isArray(tpl?.optionalAllow)){
+    for(const p of (bg.picks||[])) if(!isPickRequired(bg,p.pickId) && !tpl.optionalAllow.includes(p.unitId))
+      extraIssues.push('Unit not allowed as an optional selection in this Specialist Battle Group.');
+  }
   if(tpl?.restrict && tpl.faction === "Forerunners"){
     for(const p of (bg.picks || [])){
       if(violatesBgRestrictions(tpl, p.unitId)){
@@ -4397,19 +4679,35 @@ function canAddPickToBG(bg, unitId, requiredSlotId = null){
   if(requiredSlotId){
     const reqDef = (tpl.required || []).find(r => r.slotId === requiredSlotId);
     if(reqDef){
-      const filled = (bg.requiredFilled?.[requiredSlotId] || []).length;
+      if(!(reqDef.allowed||[]).includes(unitId)) return {ok:false,reason:'Unit not permitted in this required slot.'};
+      const filled = requiredSlotFill(bg,reqDef);
+      if(reqDef.homogeneous && (bg.requiredFilled?.[requiredSlotId]||[]).some(pid=>bg.picks.find(p=>p.pickId===pid)?.unitId!==unitId))
+        return {ok:false,reason:'All Sentinel Elements in this required slot must be the same variant.'};
       if(filled >= reqDef.qty) return { ok:false, reason:"That required slot is already full." };
+      if(Number(reqDef.minElements||0)>Number(u.elementsRule?.max||1)){
+        return {ok:false,reason:'This PDF-required slot calls for more Elements than the unit profile permits. Source discrepancy; choose another permitted Unit.'};
+      }
     }
     return { ok:true };
   }
 
+  // Apply specialist unit restrictions and force-wide character/limited asset limits.
+  if(Array.isArray(tpl.optionalAllow) && !tpl.optionalAllow.includes(unitId)){
+    return {ok:false,reason:'This Specialist Battle Group does not permit that optional unit.'};
+  }
+  if(unitBuckets(u).includes('CHAR') && optionalHeroCount() >= optionalHeroLimit()){
+    return {ok:false,reason:`Optional Heroic Character limit reached (${optionalHeroCount()}/${optionalHeroLimit()}; 1 per full 1000 MFV).`};
+  }
+  if((u.tags||[]).includes('Limited Asset') && optionalLimitedAssetCount(unitId)>=1){
+    return {ok:false,reason:'Limited Asset: only one non-requisite copy allowed per Force.'};
+  }
   // ✅ Optional caps validation
   const t = bgTotals(bg);
   const caps = t.caps || {};
 
   // BR to “reserve” when adding this unit as optional.
   // For "each" units, assume minimum elements (same logic you had).
-  const assumedBR = u.br * (u.elementsRule?.mode === "each" ? (u.elementsRule.min ?? 1) : 1);
+  const assumedBR = effectiveBuildRating(u) * (u.elementsRule?.mode === "each" ? (u.elementsRule.min ?? 1) : 1);
 
   // ✅ unitBuckets(u) returns an array like ["ARM","CHA"] or ["INF"], etc.
   const buckets = unitBuckets(u);
@@ -4666,7 +4964,7 @@ function displayUpgrades(unit, pick){
       const c = Number(upPick.count || 0);
       if(c > 0){
         const each = Number(def.costEach || 0);
-        ups.push(`${def.label} x${c}${each ? ` (+${each} each)` : ""}`);
+        ups.push(`${def.label} x${c}${def.costTotal != null ? ` (+${Number(def.costTotal)} total)` : (each ? ` (+${each} each)` : "")}`);
       }
     }
   }
@@ -4762,7 +5060,8 @@ function getMaxAllowedUpgradeCount(unit, pick, def){
   // only allow the remaining free elements in that group.
   if(def?.reqGroup){
     const siblingsUsed = getSiblingCountInGroup(unit, pick, def);
-    return Math.max(0, Math.min(ruleCap, elementCap - siblingsUsed));
+    const groupMax = Number(def.groupMax ?? elementCap);
+    return Math.max(0, Math.min(ruleCap, elementCap - siblingsUsed, groupMax - siblingsUsed));
   }
 
   return Math.max(0, Math.min(ruleCap, elementCap));
@@ -4777,6 +5076,10 @@ function setUpgradeCount(bgId, pickId, upId, count){
   const def = (unit.upgrades || []).find(u => u.id === upId);
   if(!def || def.mode !== "count") return;
 
+  // When switching a mutually-exclusive team, release the old team first.
+  if(def.mutex && def.reqGroup && Number(count)>0){
+    pick.upgrades=(pick.upgrades||[]).filter(x=>x.id===upId || !(unit.upgrades||[]).some(d=>d.id===x.id && d.reqGroup===def.reqGroup));
+  }
   const maxAllowed = getMaxAllowedUpgradeCount(unit, pick, def);
   let c = Math.max(0, Math.min(maxAllowed, Number(count || 0)));
 
@@ -5107,7 +5410,8 @@ function render(){
     `<span class="pill"><b>Total</b>&nbsp;${totals.pts} pts</span>`,
     `<span class="pill"><b>MFV</b>&nbsp;${state.mfv} pts</span>`,
     `<span class="pill ${totals.pts > Number(state.mfv||0) ? 'bad' : 'good'}"><b>${totals.pts > Number(state.mfv||0) ? 'Over' : 'Within'}</b>&nbsp;limit</span>`,
-    `<span class="pill"><b>Total BR</b>&nbsp;${totals.br}</span>`
+    `<span class="pill"><b>Total BR</b>&nbsp;${totals.br} (force building)</span>`,
+    `<span class="pill ${optionalHeroCount()>optionalHeroLimit()?'bad':'good'}"><b>Optional Heroes</b>&nbsp;${optionalHeroCount()}/${optionalHeroLimit()}</span>`
   ].join(" ");
 
   renderBGList();
@@ -5134,7 +5438,8 @@ function renderBGList(){
     const srText = bgSpecialRulesText(tpl);
 
     // Filter optional list by BG restrictions
-    const optUnits = allUnits.filter(u => !violatesBgRestrictions(tpl, u.id));
+    const optUnits = allUnits.filter(u => !violatesBgRestrictions(tpl, u.id) &&
+      (!Array.isArray(tpl?.optionalAllow) || tpl.optionalAllow.includes(u.id)));
 
     const el = document.createElement("div");
     el.className = "bg";
@@ -5234,7 +5539,7 @@ function renderBGList(){
       reqZone.innerHTML = `<div class="mini">No required slots.</div>`;
     } else {
       reqZone.innerHTML = reqs.map(req=>{
-        const filledCount = (bg.requiredFilled?.[req.slotId] || []).length;
+        const filledCount = requiredSlotFill(bg,req);
         const need = req.qty;
         const slotFull = filledCount >= need;
 
@@ -5352,11 +5657,12 @@ function renderBGList(){
 			  const c = Number(entry?.count || 0);
 			  const max = getMaxAllowedUpgradeCount(u, p, def);
 			  const costEach = Number(def.costEach || 0);
+              const priceLabel = def.costTotal != null ? `+${Number(def.costTotal)} pts total` : `+${costEach} pts each`;
 
 			  return `
 				<div class="uprow">
 				  <div style="flex:1;">
-					<span><b>${escapeHtml(def.label)}</b> <span class="uphint">(+${costEach} pts each)</span></span>
+					<span><b>${escapeHtml(def.label)}</b> <span class="uphint">(${priceLabel})</span></span>
 				  </div>
 				  <div style="flex:0 0 120px;">
 					<select
@@ -5588,7 +5894,9 @@ function loadJSONFile(file){
   reader.onload = () => {
     try{
       const loaded = JSON.parse(reader.result);
-      if(!loaded || loaded.version !== state.version) throw new Error("Not a valid save for this builder version.");
+      if(!loaded || !['HGC_FORCE_BUILDER','HGC_FORCE_BUILDER_1_7_3'].includes(loaded.version))
+        throw new Error("Not a supported Halo Ground Command builder save.");
+      loaded.version='HGC_FORCE_BUILDER_1_7_3';
       state = loaded;
 
       state.printOptions ||= {
